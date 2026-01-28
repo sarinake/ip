@@ -1,36 +1,95 @@
 Hello! I'm Luna
 What can I do for you?
+I'm sorry, I don't know what that means.
+____________________________________________________________
+
+The description of a todo cannot be empty. Example: todo read book
+____________________________________________________________
+
 Got it. I've added this task:
 [T][ ] read book
 Now you have 1 tasks in the list.
 ____________________________________________________________
 
 Got it. I've added this task:
-[D][ ] return book (by: Sunday)
+[T][ ] take notes
 Now you have 2 tasks in the list.
 ____________________________________________________________
 
 Got it. I've added this task:
-[E][ ] project meeting (from: Mon 2pm to: 4pm)
+[T][ ] attend class
 Now you have 3 tasks in the list.
 ____________________________________________________________
 
-Nice! I've marked this task as done:
-[D][X] return book (by: Sunday)
+A deadline must include a description and end date in this format: deadline <desc> /by <end>
+Example: deadline return book /by Sunday
+____________________________________________________________
+
+A deadline must include a description and end date in this format: deadline <desc> /by <end>
+Example: deadline return book /by Sunday
+____________________________________________________________
+
+A deadline must include a description and end date in this format: deadline <desc> /by <end>
+Example: deadline return book /by Sunday
+____________________________________________________________
+
+Got it. I've added this task:
+[D][ ] return book (by: Sunday)
+Now you have 4 tasks in the list.
+____________________________________________________________
+
+An event must include a description, start date, and end date in this format: event <desc> /from <start> /to <end>
+Example: event project meeting /from Mon 2pm /to 4pm
+____________________________________________________________
+
+An event must include a description, start date, and end date in this format: event <desc> /from <start> /to <end>
+Example: event project meeting /from Mon 2pm /to 4pm
+____________________________________________________________
+
+An event must include a description, start date, and end date in this format: event <desc> /from <start> /to <end>
+Example: event project meeting /from Mon 2pm /to 4pm
+____________________________________________________________
+
+Got it. I've added this task:
+[E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 5 tasks in the list.
+____________________________________________________________
+
+Task list is full (max 5).
+____________________________________________________________
+
+Task number must be an integer. Example: mark 2
+____________________________________________________________
+
+Task number is out of range. Use 1 to 5.
+____________________________________________________________
+
+Task number is out of range. Use 1 to 5.
 ____________________________________________________________
 
 Nice! I've marked this task as done:
-[E][X] project meeting (from: Mon 2pm to: 4pm)
+[T][X] read book
+____________________________________________________________
+
+Task number must be an integer. Example: unmark 2
+____________________________________________________________
+
+Task number is out of range. Use 1 to 5.
+____________________________________________________________
+
+This task is not yet marked as done.
 ____________________________________________________________
 
 OK, I've marked this task as not done yet:
-[D][ ] return book (by: Sunday)
+[T][ ] read book
 ____________________________________________________________
 
 Here are the tasks in your list:
 1. [T][ ] read book
-2. [D][ ] return book (by: Sunday)
-3. [E][X] project meeting (from: Mon 2pm to: 4pm)
+2. [T][ ] take notes
+3. [T][ ] attend class
+4. [D][ ] return book (by: Sunday)
+5. [E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 
 Bye. Hope to see you again soon!

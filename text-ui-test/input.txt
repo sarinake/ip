@@ -1,8 +1,24 @@
+askaasjghs
+todo
 todo read book
+todo take notes
+todo attend class
+deadline
+deadline return book
+deadline return book /by
 deadline return book /by Sunday
+event
+event project meeting
+event project meeting /from Mon 2pm /to
 event project meeting /from Mon 2pm /to 4pm
-mark 2
-mark 3
+todo write essay
+mark asdkjagd
+mark -1
+mark 6
+mark 1
+unmark askdjasd
+unmark -1
 unmark 2
+unmark 1
 list
 bye
