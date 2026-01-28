@@ -11,16 +11,6 @@ Got it. I've added this task:
 Now you have 1 tasks in the list.
 ____________________________________________________________
 
-Got it. I've added this task:
-[T][ ] take notes
-Now you have 2 tasks in the list.
-____________________________________________________________
-
-Got it. I've added this task:
-[T][ ] attend class
-Now you have 3 tasks in the list.
-____________________________________________________________
-
 A deadline must include a description and end date in this format: deadline <desc> /by <end>
 Example: deadline return book /by Sunday
 ____________________________________________________________
@@ -35,7 +25,7 @@ ____________________________________________________________
 
 Got it. I've added this task:
 [D][ ] return book (by: Sunday)
-Now you have 4 tasks in the list.
+Now you have 2 tasks in the list.
 ____________________________________________________________
 
 An event must include a description, start date, and end date in this format: event <desc> /from <start> /to <end>
@@ -52,19 +42,16 @@ ____________________________________________________________
 
 Got it. I've added this task:
 [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 5 tasks in the list.
-____________________________________________________________
-
-Task list is full (max 5).
+Now you have 3 tasks in the list.
 ____________________________________________________________
 
 Task number must be an integer. Example: mark 2
 ____________________________________________________________
 
-Task number is out of range. Use 1 to 5.
+Task number is out of range. Use 1 to 3.
 ____________________________________________________________
 
-Task number is out of range. Use 1 to 5.
+Task number is out of range. Use 1 to 3.
 ____________________________________________________________
 
 Nice! I've marked this task as done:
@@ -74,22 +61,36 @@ ____________________________________________________________
 Task number must be an integer. Example: unmark 2
 ____________________________________________________________
 
-Task number is out of range. Use 1 to 5.
+Task number is out of range. Use 1 to 3.
+____________________________________________________________
+
+Task number is out of range. Use 1 to 3.
 ____________________________________________________________
 
 This task is not yet marked as done.
+____________________________________________________________
+
+This task is already marked as done.
 ____________________________________________________________
 
 OK, I've marked this task as not done yet:
 [T][ ] read book
 ____________________________________________________________
 
+Task number is out of range. Use 1 to 3.
+____________________________________________________________
+
+Task number is out of range. Use 1 to 3.
+____________________________________________________________
+
+Noted. I've removed this task:
+[E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 2 in the list.
+____________________________________________________________
+
 Here are the tasks in your list:
 1. [T][ ] read book
-2. [T][ ] take notes
-3. [T][ ] attend class
-4. [D][ ] return book (by: Sunday)
-5. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+2. [D][ ] return book (by: Sunday)
 ____________________________________________________________
 
 Bye. Hope to see you again soon!

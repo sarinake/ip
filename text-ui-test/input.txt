@@ -1,8 +1,6 @@
 askaasjghs
 todo
 todo read book
-todo take notes
-todo attend class
 deadline
 deadline return book
 deadline return book /by
@@ -11,14 +9,18 @@ event
 event project meeting
 event project meeting /from Mon 2pm /to
 event project meeting /from Mon 2pm /to 4pm
-todo write essay
 mark asdkjagd
 mark -1
 mark 6
 mark 1
 unmark askdjasd
 unmark -1
+unmark 6
 unmark 2
+mark 1
 unmark 1
+delete -1
+delete 6
+delete 3
 list
 bye
