@@ -1,9 +1,8 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Luna {
-    private Task[] tasks = new Task[5];
-    private int count = 0;
-
+    private ArrayList<Task> tasks = new ArrayList<>(100);
     private static final String LINE = "____________________________________________________________\n";
 
     public static void main(String[] args) {
@@ -35,12 +34,12 @@ public class Luna {
     public void handleCommand(String input) throws LunaException {
         if (input.equalsIgnoreCase("list")) {
             System.out.println("Here are the tasks in your list:");
-            for (int i = 0; i < count; i++) {
-                System.out.println((i + 1) + ". " + tasks[i]);
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + ". " + tasks.get(i));
             }
         } else if (input.startsWith("mark")) {
             int index = parseIndex(input, "mark");
-            Task task = tasks[index];
+            Task task = tasks.get(index);
             if (task.isDone()) {
                 throw new LunaException("This task is already marked as done.");
             }
@@ -49,13 +48,20 @@ public class Luna {
             System.out.println(task);
         } else if (input.startsWith("unmark")) {
             int index = parseIndex(input, "unmark");
-            Task task = tasks[index];
+            Task task = tasks.get(index);
             if (!task.isDone()) {
                 throw new LunaException("This task is not yet marked as done.");
             }
             task.markUndone();
             System.out.println("OK, I've marked this task as not done yet:");
             System.out.println(task);
+        } else if (input.startsWith("delete")) {
+            int index = parseIndex(input, "delete");
+            Task task = tasks.get(index);
+            tasks.remove(task);
+            System.out.println("Noted. I've removed this task:");
+            System.out.println(task);
+            System.out.println("Now you have " + tasks.size() + " in the list.");
         } else if (input.startsWith("todo")) {
             String desc = input.substring("todo".length()).trim();
             if (desc.isEmpty()) {
@@ -123,20 +129,16 @@ public class Luna {
             throw new LunaException("Task number must be an integer. Example: " + command + " 2");
         }
 
-        if (num < 1 || num > count) {
-            throw new LunaException("Task number is out of range. Use 1 to " + count + ".");
+        if (num < 1 || num > tasks.size()) {
+            throw new LunaException("Task number is out of range. Use 1 to " + tasks.size() + ".");
         }
         return num - 1;
     }
 
     public void addTask(Task task) throws LunaException {
-        if (count >= tasks.length) {
-            throw new LunaException("Task list is full (max " + tasks.length + ").");
-        }
-        tasks[count] = task;
-        count++;
+        tasks.add(task);
         System.out.println("Got it. I've added this task:");
-        System.out.println(tasks[count - 1]);
-        System.out.println("Now you have " + count + " tasks in the list.");
+        System.out.println(tasks.get(tasks.size() - 1));
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 }
