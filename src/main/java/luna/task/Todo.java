@@ -1,4 +1,4 @@
-package luna;
+package luna.task;
 
 /**
  * Represents a {@code Task} with no additional time-related information.

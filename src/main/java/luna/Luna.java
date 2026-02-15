@@ -3,6 +3,12 @@ package luna;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import luna.exception.LunaException;
+import luna.task.Task;
+import luna.task.Todo;
+import luna.task.Deadline;
+import luna.task.Event;
+
 /**
  * Runs the Luna task manager.
  * Reads commands from standard input and prints responses to standard output.

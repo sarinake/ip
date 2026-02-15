@@ -1,4 +1,4 @@
-package luna;
+package luna.exception;
 
 /**
  * Represents exceptions thrown by Luna.
