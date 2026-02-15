@@ -1,5 +1,6 @@
 Hello! I'm Luna
 What can I do for you?
+
 I'm sorry, I don't know what that means.
 ____________________________________________________________
 
@@ -85,7 +86,7 @@ ____________________________________________________________
 
 Noted. I've removed this task:
 [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 2 in the list.
+Now you have 2 tasks in the list.
 ____________________________________________________________
 
 Here are the tasks in your list:
