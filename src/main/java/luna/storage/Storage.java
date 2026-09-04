@@ -83,7 +83,7 @@ public class Storage {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Task task : tasks) {
-                writer.write(task.toFileString()); // OOP serialising
+                writer.write(task.toFileString()); // OOP serialising (convert object into file storable format)
                 writer.newLine();
             }
         } catch (IOException e) {

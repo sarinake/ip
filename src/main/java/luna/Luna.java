@@ -32,7 +32,6 @@ public class Luna {
      * Creates a Luna instance and loads saved tasks from storage.
      */
     public Luna() {
-        System.out.println("DEBUG user.dir = " + System.getProperty("user.dir"));
         try {
             tasks.addAll(storage.load());
         } catch (LunaException e) {
