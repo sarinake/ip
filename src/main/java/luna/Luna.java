@@ -3,6 +3,8 @@ package luna;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import java.time.LocalDate;
+
 import luna.task.Task;
 import luna.task.Todo;
 import luna.task.Deadline;
@@ -22,11 +24,11 @@ public class Luna {
 
     private static final String DEADLINE_FORMAT_MESSAGE = "A deadline must include a description and end date in "
             + "this format: deadline <desc> /by <end>\n"
-            + "Example: deadline return book /by Sunday";
+            + "Example: deadline return book /by 2019-10-15";
 
     private static final String EVENT_FORMAT_MESSAGE = "An event must include a description, start date, and end date in "
             + "this format: event <desc> /from <start> /to <end>\n"
-            + "Example: event project meeting /from Mon 2pm /to 4pm";
+            + "Example: event project meeting /from 2019-10-15 /to 2019-10-16";
     
     /**
      * Creates a Luna instance and loads saved tasks from storage.
@@ -200,7 +202,8 @@ public class Luna {
             throw new LunaException(DEADLINE_FORMAT_MESSAGE);
         }
 
-        addTask(new Deadline(desc, by));
+        LocalDate byDate = Deadline.parseDate(by);
+        addTask(new Deadline(desc, byDate));
     }
 
     /**
@@ -231,7 +234,12 @@ public class Luna {
             throw new LunaException(EVENT_FORMAT_MESSAGE);
         }
 
-        addTask(new Event(desc, from, to));
+        LocalDate fromDate = Event.parseDate(from);
+        LocalDate toDate = Event.parseDate(to);
+        if (fromDate.isAfter(toDate)) {
+            throw new LunaException("The start date must be before the end date");
+        }
+        addTask(new Event(desc, fromDate, toDate));
     }
 
     /**
