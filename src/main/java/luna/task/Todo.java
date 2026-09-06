@@ -31,9 +31,9 @@ public class Todo extends Task {
      *
      * @param parts split components of a saved line
      * @return parsed Todo
-     * @throws LunaException if the saved line format is invalid
+     * @throws LunaException if the line format is invalid
      */
-    public static Todo fromFileParts(String[] parts) throws LunaException {
+    protected static Todo fromFileParts(String[] parts) throws LunaException {
         if (parts.length < 3) {
             throw new LunaException("Invalid todo line in data file");
         }

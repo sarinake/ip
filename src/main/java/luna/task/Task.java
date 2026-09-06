@@ -59,7 +59,7 @@ public abstract class Task {
     /**
      * Returns the file format representation of this task.
      *
-     * @return one-line string for saving in storage
+     * @return one-line string for saving in the data file
      */
     public abstract String toFileString();
 
@@ -68,12 +68,12 @@ public abstract class Task {
      *
      * @param line a line from the data file
      * @return parsed Task
-     * @throws LunaException if the line is invalid
+     * @throws LunaException if the line format is invalid
      */
     public static Task fromFileLine(String line) throws LunaException {
         String[] parts = line.split("\\s*\\|\\s*");
         if (parts.length < 3) {
-            throw new LunaException("Invalid saved line: " + line);
+            throw new LunaException("Invalid line in data file: " + line);
         }
 
         String type = parts[0];
@@ -85,7 +85,7 @@ public abstract class Task {
         case "E":
             return Event.fromFileParts(parts);
         default:
-            throw new LunaException("Unknown task type: " + type);
+            throw new LunaException("Unknown task type in data file: " + type);
         }
     }
 
