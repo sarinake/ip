@@ -1,6 +1,7 @@
 package luna;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import luna.exception.LunaException;
 import luna.parser.Parser;
@@ -94,6 +95,9 @@ public class Luna {
             case "delete":
                 deleteTask(rest);
                 break;
+            case "find":
+                findTasks(rest);
+                break;
             case "todo":
                 addTodo(rest);
                 break;
@@ -111,7 +115,7 @@ public class Luna {
     /**
      * Marks the task at the given task number as done.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
+     * @param rest rest of user input after command word (e.g. {@code mark})
      * @throws LunaException if task number is invalid or task is already marked as done
      */
     private void markTask(String rest) throws LunaException {
@@ -130,7 +134,7 @@ public class Luna {
     /**
      * Unmarks the task at the given task number (marks it as not done).
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
+     * @param rest rest of user input after command word (e.g. {@code unmark})
      * @throws LunaException if the task number is invalid or the task is not yet marked as done
      */
     private void unmarkTask(String rest) throws LunaException {
@@ -149,7 +153,7 @@ public class Luna {
     /**
      * Deletes the task at the given task number.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
+     * @param rest rest of user input after command word (e.g. {@code delete})
      * @throws LunaException if the task number is invalid
      */
     private void deleteTask(String rest) throws LunaException {
@@ -157,6 +161,39 @@ public class Luna {
         Task removed = tasks.remove(index);
         storage.save(tasks.getUnmodifiableList());
         ui.showTaskDeleted(removed, tasks.size());
+    }
+
+    /**
+     * Finds tasks whose descriptions contain the given keyword (case-insensitive).
+     *
+     * @param rest rest of user input after command word {@code find}
+     * @throws LunaException if the keyword is missing
+     */
+    private void findTasks(String rest) throws LunaException {
+        String keyword = Parser.parseKeyword(rest).toLowerCase();
+
+        ArrayList<Task> matches = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            String desc = task.getDescription().toLowerCase();
+            if (desc.contains(keyword)) {
+                matches.add(task);
+            }
+        }
+
+        ui.showMatchingTasks(matches);
+    }
+
+    /**
+     * Adds a task to the task list and prints a confirmation message.
+     *
+     * @param task task to add.
+     * @throws LunaException if the task cannot be added.
+     */
+    public void addTask(Task task) throws LunaException {
+        tasks.add(task);
+        storage.save(tasks.getUnmodifiableList());
+        ui.showTaskAdded(task, tasks.size());
     }
 
     /**
@@ -173,7 +210,7 @@ public class Luna {
     /**
      * Adds a {@code Deadline} task using the given user input.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
+     * @param rest rest of user input after command word (e.g. {@code deadline})
      * @throws LunaException if the input format is invalid
      */
     private void addDeadline(String rest) throws LunaException {
@@ -188,7 +225,7 @@ public class Luna {
     /**
      * Adds an {@code Event} task using the given user input.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
+     * @param rest rest of user input after command word (e.g. {@code event})
      * @throws LunaException if the input format is invalid
      */
     private void addEvent(String rest) throws LunaException {
@@ -204,17 +241,5 @@ public class Luna {
         }
 
         addTask(new Event(desc, startDate, endDate));
-    }
-
-    /**
-     * Adds a task to the task list and prints a confirmation message.
-     *
-     * @param task task to add.
-     * @throws LunaException if the task cannot be added.
-     */
-    public void addTask(Task task) throws LunaException {
-        tasks.add(task);
-        storage.save(tasks.getUnmodifiableList());
-        ui.showTaskAdded(task, tasks.size());
     }
 }

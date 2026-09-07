@@ -9,7 +9,7 @@ describe checks and are not entered into the program.
 
 - Java version: Java 25
 - Entry point: `luna.Luna`
-- Working directory: one isolated temporary directory shared by all three
+- Working directory: one isolated temporary directory shared by all four
   sessions, initially without `data/luna.txt`
 - Comparison: exact text, punctuation, line order, and blank lines; only LF/CRLF
   differences and one final newline are ignored
@@ -527,3 +527,99 @@ ____________________________________________________________
 After this expected output is observed, the test harness terminates the process
 without sending another application command. This cleanup action is not part of
 the ordered input list.
+
+## UI-004: Find tasks by keyword
+
+**Aim:** Verify that `find` requires a keyword, searches task descriptions by
+case-insensitive substring, displays every matching task, and reports when no
+task matches.
+
+**Preconditions:** Start a new process in the same isolated working directory
+after UI-003. Its `data/luna.txt` must still contain the two tasks restored in
+UI-003.
+
+**Inputs and expected outputs:**
+
+### Command 1 — Reject a missing keyword
+
+**Input:**
+
+```text
+find
+```
+
+**Expected output:**
+
+```text
+Hello! I'm Luna
+What can I do for you?
+
+Please provide a keyword to search for. Example: find book
+____________________________________________________________
+
+```
+
+### Command 2 — Find multiple tasks using different letter case
+
+**Input:**
+
+```text
+find BOOK
+```
+
+**Expected output:**
+
+```text
+Here are the matching tasks in your list:
+1. [T][X] read book
+2. [D][ ] return book (by: Oct 15 2019)
+____________________________________________________________
+
+```
+
+### Command 3 — Find one task using a partial description
+
+**Input:**
+
+```text
+find read
+```
+
+**Expected output:**
+
+```text
+Here are the matching tasks in your list:
+1. [T][X] read book
+____________________________________________________________
+
+```
+
+### Command 4 — Report no matching tasks
+
+**Input:**
+
+```text
+find homework
+```
+
+**Expected output:**
+
+```text
+(No matching tasks found.)
+____________________________________________________________
+
+```
+
+### Command 5
+
+**Input:**
+
+```text
+bye
+```
+
+**Expected output:**
+
+```text
+Bye. Hope to see you again soon!
+```
