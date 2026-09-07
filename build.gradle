@@ -46,15 +46,21 @@ application {
     mainClass = 'luna.Luna'
 }
 
-jar {
+tasks.named('jar') {
     // A lean JAR file (i.e., without the dependencies packaged inside) is not needed.
     enabled = false
     // Rename its output anyway; Gradle forbids it clashing with the shadowJar output file, even for a disabled task.
     archiveClassifier = 'without-dependencies'
 }
 
-shadowJar {
+tasks.named('shadowJar') {
+    // Use a stable name so users do not need to know the project version to run the application.
     archiveFileName = 'luna.jar'
+}
+
+tasks.named('build') {
+    // Ensure a full build also produces the distributable fat JAR.
+    dependsOn tasks.named('shadowJar')
 }
 
 run {

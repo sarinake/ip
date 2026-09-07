@@ -23,3 +23,27 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## Creating and running the fat JAR
+
+The Shadow plugin packages the application and all its runtime dependencies into
+one executable JAR file.
+
+1. From the project root, create the fat JAR:
+
+   ```shell
+   ./gradlew shadowJar
+   ```
+
+   On Windows, use `gradlew.bat shadowJar` instead.
+
+2. Find the generated JAR at `build/libs/luna.jar`.
+
+3. Run it from the project root with Java 25:
+
+   ```shell
+   java -jar build/libs/luna.jar
+   ```
+
+Running `./gradlew build` also creates the same fat JAR, in addition to running
+the project's normal verification tasks.
