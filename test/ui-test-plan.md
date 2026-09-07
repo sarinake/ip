@@ -1,9 +1,9 @@
 # UI Test Plan
 
 This is the canonical record of scripted command-line UI test cases for Luna.
-Run the cases and commands in the order shown. The semicolons in the deadline
-and event inputs are literal characters. Parenthetical notes from the requested
-input list describe checks and are not entered into the program.
+Run the cases and commands in the order shown. Deadline and event date inputs
+use the `YYYY-MM-DD` format. Parenthetical notes from the requested input list
+describe checks and are not entered into the program.
 
 ## Test environment
 
@@ -117,7 +117,7 @@ deadline
 
 ```text
 A deadline must include a description and end date in this format: deadline <desc> /by <end>
-Example: deadline return book /by Sunday
+Example: deadline return book /by 2019-10-15
 ____________________________________________________________
 
 ```
@@ -134,7 +134,7 @@ deadline asdkjgsd
 
 ```text
 A deadline must include a description and end date in this format: deadline <desc> /by <end>
-Example: deadline return book /by Sunday
+Example: deadline return book /by 2019-10-15
 ____________________________________________________________
 
 ```
@@ -144,14 +144,14 @@ ____________________________________________________________
 **Input:**
 
 ```text
-deadline return book /by Sunday;
+deadline return book /by 2019-10-15
 ```
 
 **Expected output:**
 
 ```text
 Got it. I've added this task:
-[D][ ] return book (by: Sunday;)
+[D][ ] return book (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 
@@ -169,7 +169,7 @@ event
 
 ```text
 An event must include a description, start date, and end date in this format: event <desc> /from <start> /to <end>
-Example: event project meeting /from Mon 2pm /to 4pm
+Example: event project meeting /from 2019-10-15 /to 2019-10-16
 ____________________________________________________________
 
 ```
@@ -186,7 +186,7 @@ event asdkjgsd
 
 ```text
 An event must include a description, start date, and end date in this format: event <desc> /from <start> /to <end>
-Example: event project meeting /from Mon 2pm /to 4pm
+Example: event project meeting /from 2019-10-15 /to 2019-10-16
 ____________________________________________________________
 
 ```
@@ -196,14 +196,14 @@ ____________________________________________________________
 **Input:**
 
 ```text
-event project meeting /from Mon 2pm /to 4pm;
+event project meeting /from 2019-10-15 /to 2019-10-16
 ```
 
 **Expected output:**
 
 ```text
 Got it. I've added this task:
-[E][ ] project meeting (from: Mon 2pm to: 4pm;)
+[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 Now you have 3 tasks in the list.
 ____________________________________________________________
 
@@ -222,8 +222,8 @@ list
 ```text
 Here are the tasks in your list:
 1. [T][ ] read book
-2. [D][ ] return book (by: Sunday;)
-3. [E][ ] project meeting (from: Mon 2pm to: 4pm;)
+2. [D][ ] return book (by: Oct 15 2019)
+3. [E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 
 ```
@@ -401,7 +401,7 @@ mark 2
 
 ```text
 Nice! I've marked this task as done:
-[D][X] return book (by: Sunday;)
+[D][X] return book (by: Oct 15 2019)
 ____________________________________________________________
 
 ```
@@ -418,7 +418,7 @@ unmark 2
 
 ```text
 OK, I've marked this task as not done yet:
-[D][ ] return book (by: Sunday;)
+[D][ ] return book (by: Oct 15 2019)
 ____________________________________________________________
 
 ```
@@ -436,8 +436,8 @@ list
 ```text
 Here are the tasks in your list:
 1. [T][X] read book
-2. [D][ ] return book (by: Sunday;)
-3. [E][ ] project meeting (from: Mon 2pm to: 4pm;)
+2. [D][ ] return book (by: Oct 15 2019)
+3. [E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 
 ```
@@ -454,7 +454,7 @@ delete 3
 
 ```text
 Noted. I've removed this task:
-[E][ ] project meeting (from: Mon 2pm to: 4pm;)
+[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 
@@ -473,7 +473,7 @@ list
 ```text
 Here are the tasks in your list:
 1. [T][X] read book
-2. [D][ ] return book (by: Sunday;)
+2. [D][ ] return book (by: Oct 15 2019)
 ____________________________________________________________
 
 ```
@@ -519,7 +519,7 @@ What can I do for you?
 
 Here are the tasks in your list:
 1. [T][X] read book
-2. [D][ ] return book (by: Sunday;)
+2. [D][ ] return book (by: Oct 15 2019)
 ____________________________________________________________
 
 ```
