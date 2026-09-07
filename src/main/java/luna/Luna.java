@@ -80,7 +80,7 @@ public class Luna {
      * @param rest rest of user input after command word
      * @throws LunaException if command is invalid or cannot be executed
      */
-    public void handleCommand(String command, String rest) throws LunaException {
+    private void handleCommand(String command, String rest) throws LunaException {
         switch (command) {
             case "list":
                 ui.showTaskList(tasks);
@@ -212,7 +212,7 @@ public class Luna {
      * @param task task to add.
      * @throws LunaException if the task cannot be added.
      */
-    public void addTask(Task task) throws LunaException {
+    private void addTask(Task task) throws LunaException {
         tasks.add(task);
         storage.save(tasks.getUnmodifiableList());
         ui.showTaskAdded(task, tasks.size());

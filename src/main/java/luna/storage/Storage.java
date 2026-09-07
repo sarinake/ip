@@ -30,7 +30,7 @@ public class Storage {
      * Creates a Storage that reads/writes to {@code data/luna.txt}.
      *
      * <p>Note: {@link File} does not create the file on disk. It only represents a path.
-     * The folder/file is created when {@link #save(ArrayList)} is called.
+     * The folder/file is created when {@link #save(List)} is called.
      */
     public Storage() {
         this.file = new File(FILE_PATH);
