@@ -1,14 +1,14 @@
 package luna;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-
 import java.time.LocalDate;
 
 import luna.task.Task;
 import luna.task.Todo;
 import luna.task.Deadline;
 import luna.task.Event;
+import luna.task.TaskList;
+import luna.ui.Ui;
+import luna.parser.Parser;
 import luna.exception.LunaException;
 import luna.storage.Storage;
 
@@ -17,28 +17,22 @@ import luna.storage.Storage;
  * Reads commands from standard input and prints responses to standard output.
  */
 public class Luna {
-    private final ArrayList<Task> tasks = new ArrayList<>(100);
+    private final TaskList tasks;
     private final Storage storage = new Storage();
-
-    private static final String LINE = "____________________________________________________________\n";
-
-    private static final String DEADLINE_FORMAT_MESSAGE = "A deadline must include a description and end date in "
-            + "this format: deadline <desc> /by <end>\n"
-            + "Example: deadline return book /by 2019-10-15";
-
-    private static final String EVENT_FORMAT_MESSAGE = "An event must include a description, start date, and end date in "
-            + "this format: event <desc> /from <start> /to <end>\n"
-            + "Example: event project meeting /from 2019-10-15 /to 2019-10-16";
+    private final Ui ui = new Ui();
     
     /**
      * Creates a Luna instance and loads saved tasks from storage.
      */
     public Luna() {
+        TaskList loadedTasks;
         try {
-            tasks.addAll(storage.load());
+            loadedTasks = new TaskList(storage.load());
         } catch (LunaException e) {
-            System.out.println("Warning: could not load saved tasks.");
+            ui.showError("Warning: could not load saved tasks.");
+            loadedTasks = new TaskList();
         }
+        this.tasks = loadedTasks;
     }
 
     /**
@@ -47,77 +41,81 @@ public class Luna {
      * @param args command-line arguments (unused).
      */
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Luna luna = new Luna();
+        new Luna().run();
+    }
 
-        System.out.println("Hello! I'm Luna");
-        System.out.println("What can I do for you?\n");
+    /**
+     * Runs the main program loop: reads commands and executes them until "bye".
+     */
+    public void run() {
+        ui.showWelcome();
 
         while (true) {
-            String input = sc.nextLine().trim();
+            String input = ui.readCommand();
 
             try {
-                if (input.equalsIgnoreCase("bye")) {
-                    System.out.println("Bye. Hope to see you again soon!");
+                String[] parts = Parser.parse(input);
+                String command = parts[0];
+                String rest = parts[1];
+
+                if (command.equals("bye")) {
+                    ui.showBye();
                     break;
                 }
-
-                luna.handleCommand(input);
+                handleCommand(command, rest);
             } catch (LunaException e) {
-                System.out.println(e.getMessage());
-                System.out.println(LINE);
+                ui.showError(e.getMessage());
             }
+
+            ui.showLine();
         }
 
-        sc.close();
+        ui.close();
     }
 
     /**
      * Executes a single user command.
      *
-     * @param input raw user input
-     * @throws LunaException if the command is invalid or cannot be executed
+     * @param command command word from user input (e.g. {@code todo})
+     * @param rest rest of user input after command word
+     * @throws LunaException if command is invalid or cannot be executed
      */
-    public void handleCommand(String input) throws LunaException {
-        if (input.equalsIgnoreCase("list")) {
-            listTasks();
-        } else if (input.startsWith("mark")) {
-            markTask(input);
-        } else if (input.startsWith("unmark")) {
-            unmarkTask(input);
-        } else if (input.startsWith("delete")) {
-            deleteTask(input);
-        } else if (input.startsWith("todo")) {
-            addTodo(input);
-        } else if (input.startsWith("deadline")) {
-            addDeadline(input);
-        } else if (input.startsWith("event")) {
-            addEvent(input);
-        } else {
+    public void handleCommand(String command, String rest) throws LunaException {
+        switch (command) {
+        case "list":
+            ui.showTaskList(tasks);
+            break;
+        case "mark":
+            markTask(rest);
+            break;
+        case "unmark":
+            unmarkTask(rest);
+            break;
+        case "delete":
+            deleteTask(rest);
+            break;
+        case "todo":
+            addTodo(rest);
+            break;
+        case "deadline":
+            addDeadline(rest);
+            break;
+        case "event":
+            addEvent(rest);
+            break;
+        default:
             throw new LunaException("I'm sorry, I don't know what that means.");
-        }
-
-        System.out.println(LINE);
-    }
-
-    /**
-     * Prints all tasks currently in the task list.
-     */
-    private void listTasks() {
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
         }
     }
 
     /**
      * Marks the task at the given task number as done.
      *
-     * @param input raw user input
-     * @throws LunaException if the task number is invalid or the task is already marked as done
+     * @param rest rest of user input after command word (e.g. {@code todo})
+     * @throws LunaException if task number is invalid or task is already marked as done
      */
-    private void markTask(String input) throws LunaException {
-        int index = parseIndex(input, "mark");
+    private void markTask(String rest) throws LunaException {
+        int index = Parser.parseIndex(rest, "mark", tasks.size());
         Task task = tasks.get(index);
 
         if (task.isDone()) {
@@ -125,19 +123,18 @@ public class Luna {
         }
 
         task.markDone();
-        storage.save(tasks);
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
+        storage.save(tasks.getUnmodifiableList());
+        ui.showTaskMarked(task);
     }
 
     /**
      * Unmarks the task at the given task number (marks it as not done).
      *
-     * @param input raw user input
+     * @param rest rest of user input after command word (e.g. {@code todo})
      * @throws LunaException if the task number is invalid or the task is not yet marked as done
      */
-    private void unmarkTask(String input) throws LunaException {
-        int index = parseIndex(input, "unmark");
+    private void unmarkTask(String rest) throws LunaException {
+        int index = Parser.parseIndex(rest, "unmark", tasks.size());
         Task task = tasks.get(index);
 
         if (!task.isDone()) {
@@ -145,62 +142,44 @@ public class Luna {
         }
 
         task.markUndone();
-        storage.save(tasks);
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
+        storage.save(tasks.getUnmodifiableList());
+        ui.showTaskUnmarked(task);
     }
 
     /**
      * Deletes the task at the given task number.
      *
-     * @param input raw user input
+     * @param rest rest of user input after command word (e.g. {@code todo})
      * @throws LunaException if the task number is invalid
      */
-    private void deleteTask(String input) throws LunaException {
-        int index = parseIndex(input, "delete");
-        Task task = tasks.remove(index);
-        storage.save(tasks);
-
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    private void deleteTask(String rest) throws LunaException {
+        int index = Parser.parseIndex(rest, "delete", tasks.size());
+        Task removed = tasks.remove(index);
+        storage.save(tasks.getUnmodifiableList());
+        ui.showTaskDeleted(removed, tasks.size());
     }
 
     /**
      * Adds a {@code Todo} task using the given user input.
      *
-     * @param input raw user input
+     * @param rest rest of user input after command word (e.g. {@code todo})
      * @throws LunaException if the description is missing
      */
-    private void addTodo(String input) throws LunaException {
-        String desc = input.substring("todo".length()).trim();
-        if (desc.isEmpty()) {
-            throw new LunaException("The description of a todo cannot be empty. Example: todo read book");
-        }
-
+    private void addTodo(String rest) throws LunaException {
+        String desc = Parser.parseTodo(rest);
         addTask(new Todo(desc));
     }
 
     /**
      * Adds a {@code Deadline} task using the given user input.
      *
-     * @param input raw user input
+     * @param rest rest of user input after command word (e.g. {@code todo})
      * @throws LunaException if the input format is invalid
      */
-    private void addDeadline(String input) throws LunaException {
-        String rest = input.substring("deadline".length()).trim();
-
-        if (rest.isEmpty() || !rest.contains(" /by ")) {
-            throw new LunaException(DEADLINE_FORMAT_MESSAGE);
-        }
-
-        int byPos = rest.indexOf(" /by ");
-        String desc = rest.substring(0, byPos).trim();
-        String by = rest.substring(byPos + " /by ".length()).trim();
-
-        if (desc.isEmpty() || by.isEmpty()) {
-            throw new LunaException(DEADLINE_FORMAT_MESSAGE);
-        }
+    private void addDeadline(String rest) throws LunaException {
+        String[] parts = Parser.parseDeadline(rest); // [desc, by]
+        String desc = parts[0];
+        String by = parts[1];
 
         LocalDate byDate = Deadline.parseDate(by);
         addTask(new Deadline(desc, byDate));
@@ -209,66 +188,22 @@ public class Luna {
     /**
      * Adds an {@code Event} task using the given user input.
      *
-     * @param input raw user input
+     * @param rest rest of user input after command word (e.g. {@code todo})
      * @throws LunaException if the input format is invalid
      */
-    private void addEvent(String input) throws LunaException {
-        String rest = input.substring("event".length()).trim();
+    private void addEvent(String rest) throws LunaException {
+        String[] parts = Parser.parseEvent(rest); // [desc, from, to]
+        String desc = parts[0];
+        String from = parts[1];
+        String to = parts[2];
 
-        if (rest.isEmpty() || !rest.contains(" /from ") || !rest.contains(" /to ")) {
-            throw new LunaException(EVENT_FORMAT_MESSAGE);
-        }
-
-        int fromPos = rest.indexOf(" /from ");
-        int toPos = rest.indexOf(" /to ");
-
-        if (fromPos >= toPos) {
-            throw new LunaException(EVENT_FORMAT_MESSAGE);
-        }
-
-        String desc = rest.substring(0, fromPos).trim();
-        String from = rest.substring(fromPos + " /from ".length(), toPos).trim();
-        String to = rest.substring(toPos + " /to ".length()).trim();
-
-        if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new LunaException(EVENT_FORMAT_MESSAGE);
-        }
-
-        LocalDate fromDate = Event.parseDate(from);
-        LocalDate toDate = Event.parseDate(to);
-        if (fromDate.isAfter(toDate)) {
+        LocalDate startDate = Event.parseDate(from);
+        LocalDate endDate = Event.parseDate(to);
+        if (startDate.isAfter(endDate)) {
             throw new LunaException("The start date must be before the end date");
         }
-        addTask(new Event(desc, fromDate, toDate));
-    }
 
-    /**
-     * Extracts and parses the task index from a user input for {@code mark} / {@code unmark}.
-     * Converts the user-provided task number (1-based) into a 0-based index for internal use.
-     *
-     * @param input raw user input (e.g. {@code "mark 2"} or {@code "unmark 3"}).
-     * @param command command keyword (e.g. {@code "mark"}).
-     * @return 0-based index corresponding to the task number in the input.
-     * @throws LunaException if the task number is missing, not an integer, or out of range.
-     */
-    private int parseIndex(String input, String command) throws LunaException {
-        String rest = input.substring(command.length()).trim();
-        if (rest.isEmpty()) {
-            throw new LunaException("Please provide a task number. Example: " + command + " 2");
-        }
-
-        int num = 0;
-        try {
-            num = Integer.parseInt(rest);
-        } catch (NumberFormatException e) {
-            throw new LunaException("Task number must be an integer. Example: " + command + " 2");
-        }
-
-        if (num < 1 || num > tasks.size()) {
-            throw new LunaException("Task number is out of range. Use 1 to " + tasks.size() + ".");
-        }
-        
-        return num - 1;
+        addTask(new Event(desc, startDate, endDate));
     }
 
     /**
@@ -279,9 +214,7 @@ public class Luna {
      */
     public void addTask(Task task) throws LunaException {
         tasks.add(task);
-        storage.save(tasks);
-        System.out.println("Got it. I've added this task:");
-        System.out.println(tasks.get(tasks.size() - 1));
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        storage.save(tasks.getUnmodifiableList());
+        ui.showTaskAdded(task, tasks.size());
     }
 }

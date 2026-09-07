@@ -7,6 +7,7 @@ import java.io.BufferedReader; // reads whole lines efficiently
 import java.io.BufferedWriter; // writes whole lines efficiently
 import java.io.IOException;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import luna.task.Task;
@@ -44,7 +45,7 @@ public class Storage {
      * @return tasks loaded from disk
      * @throws LunaException if reading fails or if the file contains an invalid line
      */
-    public ArrayList<Task> load() throws LunaException {
+    public List<Task> load() throws LunaException {
         ArrayList<Task> tasks = new ArrayList<>();
 
         /** 
@@ -78,7 +79,7 @@ public class Storage {
      * @param tasks tasks to save
      * @throws LunaException if writing fails or the folder/file cannot be created
      */
-    public void save(ArrayList<Task> tasks) throws LunaException {
+    public void save(List<Task> tasks) throws LunaException {
         ensureFileExists();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
