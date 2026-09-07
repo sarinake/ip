@@ -28,6 +28,10 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Java coding standard
+
+For every Java code creation, edit, refactoring, or review in this project, invoke and follow the project-specific `$seedu-java-coding-standard` skill in `.codex/skills/seedu-java-coding-standard`. Treat its rules as mandatory for both production and test code.
+
 ## Post-change UI testing
 
 After every source-code update:
@@ -40,5 +44,5 @@ Do not describe a code update as complete until these steps have been performed.
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
-When proposing or creating a commit message, include enough detail to explain the rationale for the change.
+Before proposing or creating any commit message, invoke and follow the project-specific `$seedu-git-standard` skill in `.codex/skills/seedu-git-standard`. Treat its commit-message rules as mandatory for every commit in this project.
 Do not commit or push unless explicitly asked.

@@ -76,9 +76,9 @@ public class Luna {
     /**
      * Executes a single user command.
      *
-     * @param command command word from user input (e.g. {@code todo})
-     * @param rest rest of user input after command word
-     * @throws LunaException if command is invalid or cannot be executed
+     * @param command Command word from user input (e.g. {@code todo}).
+     * @param rest Rest of user input after command word.
+     * @throws LunaException If command is invalid or cannot be executed.
      */
     private void handleCommand(String command, String rest) throws LunaException {
         switch (command) {
@@ -111,8 +111,8 @@ public class Luna {
     /**
      * Marks the task at the given task number as done.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
-     * @throws LunaException if task number is invalid or task is already marked as done
+     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @throws LunaException If task number is invalid or task is already marked as done.
      */
     private void markTask(String rest) throws LunaException {
         int index = Parser.parseIndex(rest, "mark", tasks.size());
@@ -130,8 +130,8 @@ public class Luna {
     /**
      * Unmarks the task at the given task number (marks it as not done).
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
-     * @throws LunaException if the task number is invalid or the task is not yet marked as done
+     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @throws LunaException If the task number is invalid or the task is not yet marked as done.
      */
     private void unmarkTask(String rest) throws LunaException {
         int index = Parser.parseIndex(rest, "unmark", tasks.size());
@@ -149,8 +149,8 @@ public class Luna {
     /**
      * Deletes the task at the given task number.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
-     * @throws LunaException if the task number is invalid
+     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @throws LunaException If the task number is invalid.
      */
     private void deleteTask(String rest) throws LunaException {
         int index = Parser.parseIndex(rest, "delete", tasks.size());
@@ -162,8 +162,8 @@ public class Luna {
     /**
      * Adds a {@code Todo} task using the given user input.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
-     * @throws LunaException if the description is missing
+     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @throws LunaException If the description is missing.
      */
     private void addTodo(String rest) throws LunaException {
         String desc = Parser.parseTodo(rest);
@@ -173,8 +173,8 @@ public class Luna {
     /**
      * Adds a {@code Deadline} task using the given user input.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
-     * @throws LunaException if the input format is invalid
+     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @throws LunaException If the input format is invalid.
      */
     private void addDeadline(String rest) throws LunaException {
         String[] parts = Parser.parseDeadline(rest); // [desc, by]
@@ -188,8 +188,8 @@ public class Luna {
     /**
      * Adds an {@code Event} task using the given user input.
      *
-     * @param rest rest of user input after command word (e.g. {@code todo})
-     * @throws LunaException if the input format is invalid
+     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @throws LunaException If the input format is invalid.
      */
     private void addEvent(String rest) throws LunaException {
         String[] parts = Parser.parseEvent(rest); // [desc, from, to]
@@ -209,8 +209,8 @@ public class Luna {
     /**
      * Adds a task to the task list and prints a confirmation message.
      *
-     * @param task task to add.
-     * @throws LunaException if the task cannot be added.
+     * @param task Task to add.
+     * @throws LunaException If the task cannot be added.
      */
     private void addTask(Task task) throws LunaException {
         tasks.add(task);

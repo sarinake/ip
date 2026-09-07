@@ -1,6 +1,7 @@
 package luna.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import luna.exception.LunaException;

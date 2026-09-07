@@ -18,18 +18,17 @@ public class TaskList {
 
     /**
      * Creates a task list containing the tasks in the given list.
-     * Changes to the given list after construction do not affect this task list.
      *
-     * @param tasks tasks to include in the new task list
+     * @param tasks Tasks to include in the new task list.
      */
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
     }
 
     /**
-     * Adds a task to the end of the list.
+     * Adds a task to this list.
      *
-     * @param task task to add
+     * @param task Task to add.
      */
     public void add(Task task) {
         tasks.add(task);
@@ -38,9 +37,9 @@ public class TaskList {
     /**
      * Removes and returns the task at the specified zero-based index.
      *
-     * @param index zero-based index of the task to remove
-     * @return removed task
-     * @throws IndexOutOfBoundsException if the index is outside the list
+     * @param index Zero-based index of the task to remove.
+     * @return Removed task.
+     * @throws IndexOutOfBoundsException If the index is outside the list.
      */
     public Task remove(int index) {
         return tasks.remove(index);
@@ -49,28 +48,27 @@ public class TaskList {
     /**
      * Returns the task at the specified zero-based index.
      *
-     * @param index zero-based index of the task to retrieve
-     * @return task at the specified index
-     * @throws IndexOutOfBoundsException if the index is outside the list
+     * @param index Zero-based index of the task to retrieve.
+     * @return Task at the specified index.
+     * @throws IndexOutOfBoundsException If the index is outside the list.
      */
     public Task get(int index) {
         return tasks.get(index);
     }
 
     /**
-     * Returns the number of tasks in the list.
+     * Returns the number of tasks in this list.
      *
-     * @return number of tasks
+     * @return Number of tasks.
      */
     public int size() {
         return tasks.size();
     }
 
     /**
-     * Returns an unmodifiable snapshot of the tasks currently in the list.
-     * Later changes to this task list are not reflected in the returned list.
+     * Returns an unmodifiable copy of the tasks in this list.
      *
-     * @return unmodifiable snapshot of the tasks
+     * @return Unmodifiable task list.
      */
     public List<Task> getUnmodifiableList() {
         return List.copyOf(tasks);

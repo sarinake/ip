@@ -10,15 +10,15 @@ import luna.exception.LunaException;
  * Represents a {@code Task} with an associated deadline.
  */
 public class Deadline extends Task {
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter DATE_INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
+    private static final DateTimeFormatter DATE_OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private LocalDate deadline;
 
     /**
      * Creates a deadline task.
      *
-     * @param description task description.
-     * @param deadline deadline as a {@link LocalDate}.
+     * @param description Task description.
+     * @param deadline Deadline as a {@link LocalDate}.
      */
     public Deadline(String description, LocalDate deadline) {
         super(description);
@@ -27,20 +27,21 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return String.format("[D]%s (by: %s)", super.toString(), deadline.format(OUTPUT_FORMAT));
+        return String.format("[D]%s (by: %s)", super.toString(), deadline.format(DATE_OUTPUT_FORMAT));
     }
 
     @Override
     public String toFileString() {
-        return "D | " + doneFlag(isDone) + " | " + description + " | " + deadline.format(INPUT_FORMAT);
+        return "D | " + formatDoneFlag(isDone) + " | " + description + " | "
+                + deadline.format(DATE_INPUT_FORMAT);
     }
 
     /**
      * Creates a {@link Deadline} from saved parts of a file line.
      *
-     * @param parts split components of a saved line
-     * @return parsed Deadline
-     * @throws LunaException if the line format is invalid
+     * @param parts Split components of a saved line.
+     * @return Parsed deadline.
+     * @throws LunaException If the line format is invalid.
      */
     protected static Deadline fromFileParts(String[] parts) throws LunaException {
         if (parts.length < 4) {
@@ -58,13 +59,13 @@ public class Deadline extends Task {
     /**
      * Parses a user-provided date string into {@link LocalDate}.
      *
-     * @param raw user input date string (expected yyyy-MM-dd).
-     * @return parsed LocalDate
-     * @throws LunaException if the date format is invalid
+     * @param raw User input date string (expected yyyy-MM-dd).
+     * @return Parsed date.
+     * @throws LunaException If the date format is invalid.
      */
     public static LocalDate parseDate(String raw) throws LunaException {
         try {
-            return LocalDate.parse(raw, INPUT_FORMAT);
+            return LocalDate.parse(raw, DATE_INPUT_FORMAT);
         } catch (DateTimeParseException e) {
             throw new LunaException("Invalid date format. Use yyyy-MM-dd (e.g., 2019-10-15)");
         }

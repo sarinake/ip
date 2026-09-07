@@ -10,8 +10,8 @@ import luna.exception.LunaException;
  * Represents a {@code Task} with an associated start and end date.
  */
 public class Event extends Task {
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter DATE_INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
+    private static final DateTimeFormatter DATE_OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -19,9 +19,9 @@ public class Event extends Task {
     /**
      * Creates an event task.
      *
-     * @param description task description
-     * @param startDate event start date as a {@link LocalDate}.
-     * @param endDate event end date as a a {@link LocalDate}.
+     * @param description Task description.
+     * @param startDate Event start date as a {@link LocalDate}.
+     * @param endDate Event end date as a {@link LocalDate}.
      */
     public Event(String description, LocalDate startDate, LocalDate endDate) {
         super(description);
@@ -32,21 +32,21 @@ public class Event extends Task {
     @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(),
-                startDate.format(OUTPUT_FORMAT), endDate.format(OUTPUT_FORMAT));
+                startDate.format(DATE_OUTPUT_FORMAT), endDate.format(DATE_OUTPUT_FORMAT));
     }
 
     @Override
     public String toFileString() {
-        return "E | " + doneFlag(isDone) + " | " + description + " | "
-                + startDate.format(INPUT_FORMAT) + " | " + endDate.format(INPUT_FORMAT);
+        return "E | " + formatDoneFlag(isDone) + " | " + description + " | "
+                + startDate.format(DATE_INPUT_FORMAT) + " | " + endDate.format(DATE_INPUT_FORMAT);
     }
 
     /**
      * Creates an {@link Event} from saved parts of a file line.
      *
-     * @param parts split components of a saved line
-     * @return parsed Event
-     * @throws LunaException if the line format is invalid
+     * @param parts Split components of a saved line.
+     * @return Parsed event.
+     * @throws LunaException If the line format is invalid.
      */
     protected static Event fromFileParts(String[] parts) throws LunaException {
         if (parts.length < 5) {
@@ -65,13 +65,13 @@ public class Event extends Task {
     /**
      * Parses a user-provided date string into {@link LocalDate}.
      *
-     * @param raw user input date string (expected yyyy-MM-dd)
-     * @return parsed LocalDate
-     * @throws LunaException if the date format is invalid
+     * @param raw User input date string (expected yyyy-MM-dd).
+     * @return Parsed date.
+     * @throws LunaException If the date format is invalid.
      */
     public static LocalDate parseDate(String raw) throws LunaException {
         try {
-            return LocalDate.parse(raw, INPUT_FORMAT);
+            return LocalDate.parse(raw, DATE_INPUT_FORMAT);
         } catch (DateTimeParseException e) {
             throw new LunaException("Invalid date format. Use yyyy-MM-dd (e.g., 2019-10-15)");
         }
