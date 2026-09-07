@@ -45,7 +45,7 @@ public class Ui {
     /**
      * Shows an error message.
      *
-     * @param message error message to show.
+     * @param message Error message to show.
      */
     public void showError(String message) {
         System.out.println(message);
@@ -54,7 +54,7 @@ public class Ui {
     /**
      * Reads the next line of user input (trimmed).
      *
-     * @return user input as a trimmed string
+     * @return User input as a trimmed string.
      */
     public String readCommand() {
         return scanner.nextLine().trim();
@@ -63,7 +63,7 @@ public class Ui {
     /**
      * Prints all tasks currently in the task list.
      *
-     * @param tasks task list to display
+     * @param tasks Task list to display.
      */
     public void showTaskList(TaskList tasks) {
         System.out.println("Here are the tasks in your list:");
@@ -75,8 +75,8 @@ public class Ui {
     /**
      * Shows confirmation that a task was added.
      *
-     * @param task the task that was added
-     * @param totalTasks updated number of tasks in the list
+     * @param task Task that was added.
+     * @param totalTasks Updated number of tasks in the list.
      */
     public void showTaskAdded(Task task, int totalTasks) {
         System.out.println("Got it. I've added this task:");
@@ -87,8 +87,8 @@ public class Ui {
     /**
      * Shows confirmation that a task was removed.
      *
-     * @param task the task that was removed
-     * @param totalTasks updated number of tasks in the list
+     * @param task Task that was removed.
+     * @param totalTasks Updated number of tasks in the list.
      */
     public void showTaskDeleted(Task task, int totalTasks) {
         System.out.println("Noted. I've removed this task:");
@@ -99,7 +99,7 @@ public class Ui {
     /**
      * Shows confirmation that a task was marked as done.
      *
-     * @param task the task that was marked
+     * @param task Task that was marked.
      */
     public void showTaskMarked(Task task) {
         System.out.println("Nice! I've marked this task as done:");
@@ -109,7 +109,7 @@ public class Ui {
     /**
      * Shows confirmation that a task was marked as not done.
      *
-     * @param task the task that was unmarked
+     * @param task Task that was unmarked.
      */
     public void showTaskUnmarked(Task task) {
         System.out.println("OK, I've marked this task as not done yet:");

@@ -12,7 +12,7 @@ public abstract class Task {
     /**
      * Creates a task with the given description.
      *
-     * @param description task description.
+     * @param description Task description.
      */
     public Task(String description) {
         this.description = description;
@@ -59,16 +59,16 @@ public abstract class Task {
     /**
      * Returns the file format representation of this task.
      *
-     * @return one-line string for saving in the data file
+     * @return One-line string for saving in the data file.
      */
     public abstract String toFileString();
 
     /**
      * Parses a saved line and creates the corresponding {@code Task} object.
      *
-     * @param line a line from the data file
-     * @return parsed Task
-     * @throws LunaException if the line format is invalid
+     * @param line Line from the data file.
+     * @return Parsed task.
+     * @throws LunaException If the line format is invalid.
      */
     public static Task fromFileLine(String line) throws LunaException {
         String[] parts = line.split("\\s*\\|\\s*");
@@ -93,20 +93,20 @@ public abstract class Task {
      * Converts a done flag read from file into a boolean value,
      * indicating whether a task is marked as done.
      *
-     * @param doneFlag done flag from file (expected {@code "0"} or {@code "1"})
-     * @return true if the flag is {@code "1"}, otherwise false
+     * @param doneFlag Done flag from file (expected {@code "0"} or {@code "1"}).
+     * @return {@code true} if the flag is {@code "1"}, otherwise {@code false}.
      */
     protected static boolean parseDoneFlag(String doneFlag) {
         return "1".equals(doneFlag);
     }
 
     /**
-     * Converts the done status into the string flag used in the data file.
+     * Formats the done status as the string flag used in the data file.
      *
-     * @param isDone whether the task is done
-     * @return {@code "1"} if done, otherwise {@code "0"}
+     * @param isDone Whether the task is done.
+     * @return {@code "1"} if done, otherwise {@code "0"}.
      */
-    protected static String doneFlag(boolean isDone) {
+    protected static String formatDoneFlag(boolean isDone) {
         return isDone ? "1" : "0";
     }
 }

@@ -3,6 +3,7 @@ package luna.parser;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 
 import luna.exception.LunaException;
@@ -30,23 +31,19 @@ public class ParserTest {
     }
 
     @Test
-    void parseTodo_invalidInputs_sameMessage_exceptionThrown() {
+    void parseTodo_invalidInputs_exceptionThrown() {
         String[] inputs = { "", "   ", null };
 
         for (String input : inputs) {
             // assertThrows(expected exception, actual exception, failure message if there's mismatch)
-            LunaException ex = assertThrows(
-                    LunaException.class,
-                    () -> Parser.parseTodo(input),
-                    "Expected LunaException for input: " + input
-            );
+            LunaException ex = assertThrows(LunaException.class, () -> Parser.parseTodo(input),
+                    "Expected LunaException for input: " + input);
 
             // assertEquals(expected ex message, actual ex message, failure message if there's mismatch)
             assertEquals(
                     TODO_FORMAT_MESSAGE,
                     ex.getMessage(),
-                    "Incorrect exception message for input: " + input
-            );
+                    "Incorrect exception message for input: " + input);
         }
     }
 
@@ -68,19 +65,17 @@ public class ParserTest {
     }
 
     @Test
-    void parseDeadline_invalidFormats_sameMessage_exceptionThrown() {
+    void parseDeadline_invalidFormats_exceptionThrown() {
         String[] inputs = {
-                "",
-                "   ",
-                "return book",
-                "return book /by",
-                " /by 2019-10-15"
+            "",
+            "   ",
+            "return book",
+            "return book /by",
+            " /by 2019-10-15"
         };
 
         for (String input : inputs) {
-            LunaException ex = assertThrows(
-                    LunaException.class,
-                    () -> Parser.parseDeadline(input),
+            LunaException ex = assertThrows(LunaException.class, () -> Parser.parseDeadline(input),
                     "Expected LunaException for input: " + input);
 
             assertEquals(DEADLINE_FORMAT_MESSAGE,

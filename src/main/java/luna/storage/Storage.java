@@ -41,8 +41,8 @@ public class Storage {
      *
      * <p>If the data file does not exist (e.g. first run), an empty list is returned.
      *
-     * @return tasks loaded from disk
-     * @throws LunaException if reading fails or if the file contains an invalid line
+     * @return Tasks loaded from disk.
+     * @throws LunaException If reading fails or if the file contains an invalid line.
      */
     public List<Task> load() throws LunaException {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -72,15 +72,15 @@ public class Storage {
      *
      * <p>Creates the {@code data/} folder and the data file if they do not exist.
      *
-     * @param tasks tasks to save
-     * @throws LunaException if writing fails or the folder/file cannot be created
+     * @param tasks Tasks to save.
+     * @throws LunaException If writing fails or the folder/file cannot be created.
      */
     public void save(List<Task> tasks) throws LunaException {
         ensureFileExists();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Task task : tasks) {
-                writer.write(task.toFileString()); // OOP serialising (convert object into file storable format)
+                writer.write(task.toFileString()); // OOP serializing (convert object into file-storable format)
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -91,7 +91,7 @@ public class Storage {
     /**
      * Ensures the data file exists and is ready for reading/writing.
      *
-     * @throws LunaException if the folder/file cannot be created
+     * @throws LunaException If the folder/file cannot be created.
      */
     private void ensureFileExists() throws LunaException {
         try {

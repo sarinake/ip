@@ -9,30 +9,65 @@ import java.util.List;
 public class TaskList {
     private final ArrayList<Task> tasks;
 
+    /**
+     * Creates an empty task list.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>(100);
     }
 
+    /**
+     * Creates a task list containing copies of the supplied task references.
+     *
+     * @param tasks Tasks to add initially.
+     */
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
     }
 
+    /**
+     * Adds a task to this list.
+     *
+     * @param task Task to add.
+     */
     public void add(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Removes and returns the task at the specified index.
+     *
+     * @param index Zero-based index of the task to remove.
+     * @return Removed task.
+     */
     public Task remove(int index) {
         return tasks.remove(index);
     }
 
+    /**
+     * Returns the task at the specified index.
+     *
+     * @param index Zero-based index of the task to return.
+     * @return Task at the specified index.
+     */
     public Task get(int index) {
         return tasks.get(index);
     }
 
+    /**
+     * Returns the number of tasks in this list.
+     *
+     * @return Number of tasks.
+     */
     public int size() {
         return tasks.size();
     }
 
+    /**
+     * Returns an unmodifiable copy of the tasks in this list.
+     *
+     * @return Unmodifiable task list.
+     */
     public List<Task> getUnmodifiableList() {
         return List.copyOf(tasks);
     }

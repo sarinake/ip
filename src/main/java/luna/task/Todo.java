@@ -10,7 +10,7 @@ public class Todo extends Task {
     /**
      * Creates a to-do task.
      *
-     * @param description task description
+     * @param description Task description.
      */
     public Todo(String description) {
         super(description);
@@ -23,15 +23,15 @@ public class Todo extends Task {
 
     @Override
     public String toFileString() {
-        return "T | " + doneFlag(isDone) + " | " + description;
+        return "T | " + formatDoneFlag(isDone) + " | " + description;
     }
 
     /**
      * Creates a {@link Todo} from saved parts of a file line.
      *
-     * @param parts split components of a saved line
-     * @return parsed Todo
-     * @throws LunaException if the line format is invalid
+     * @param parts Split components of a saved line.
+     * @return Parsed to-do.
+     * @throws LunaException If the line format is invalid.
      */
     protected static Todo fromFileParts(String[] parts) throws LunaException {
         if (parts.length < 3) {
