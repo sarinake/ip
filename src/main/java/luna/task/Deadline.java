@@ -12,7 +12,7 @@ import luna.exception.LunaException;
 public class Deadline extends Task {
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
-    protected LocalDate deadline;
+    private LocalDate deadline;
 
     /**
      * Creates a deadline task.

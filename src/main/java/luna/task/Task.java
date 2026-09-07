@@ -14,7 +14,7 @@ public abstract class Task {
      *
      * @param description task description.
      */
-    public Task(String description) {
+    protected Task(String description) {
         this.description = description;
         this.isDone = false;
     }
@@ -47,7 +47,7 @@ public abstract class Task {
      *
      * @return {@code "X"} if done, otherwise {@code " "}.
      */
-    public String getStatusIcon() {
+    private String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
 

@@ -13,8 +13,8 @@ public class Event extends Task {
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    protected LocalDate startDate;
-    protected LocalDate endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     /**
      * Creates an event task.
