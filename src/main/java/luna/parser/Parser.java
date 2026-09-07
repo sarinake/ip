@@ -38,6 +38,51 @@ public class Parser {
     }
 
     /**
+     * Extracts and parses the task index from {@code rest} for {@code mark} / {@code unmark}.
+     * Converts the user-provided task number (1-based) into a 0-based index for internal use.
+     *
+     * @param rest Rest of user input after {@code mark} or {@code unmark}.
+     * @param command Command word (e.g. {@code mark}).
+     * @param listSize Current number of tasks.
+     * @return 0-based index.
+     * @throws LunaException If the task number is missing/not a number/out of range.
+     */
+    public static int parseIndex(String rest, String command, int listSize) throws LunaException {
+        rest = (rest == null) ? "" : rest.trim();
+        if (rest.isEmpty()) {
+            throw new LunaException("Please provide a task number. Example: " + command + " 2");
+        }
+
+        int num;
+        try {
+            num = Integer.parseInt(rest);
+        } catch (NumberFormatException e) {
+            throw new LunaException("Task number must be an integer. Example: " + command + " 2");
+        }
+
+        if (num < 1 || num > listSize) {
+            throw new LunaException("Task number is out of range. Use 1 to " + listSize + ".");
+        }
+
+        return num - 1;
+    }
+
+    /**
+     * Parses the keyword for the user command {@code find}.
+     *
+     * @param rest Rest of user input after {@code find}.
+     * @return Keyword to search for.
+     * @throws LunaException If the keyword is missing.
+     */
+    public static String parseKeyword(String rest) throws LunaException {
+        String keyword = (rest == null) ? "" : rest.trim();
+        if (keyword.isEmpty()) {
+            throw new LunaException("Please provide a keyword to search for. Example: find book");
+        }
+        return keyword;
+    }
+
+    /**
      * Parses the description of a todo.
      *
      * @param rest Rest of user input after {@code todo}.
@@ -102,35 +147,5 @@ public class Parser {
         }
 
         return new String[] {desc, from, to};
-    }
-
-    /**
-     * Extracts and parses the task index from {@code rest} for {@code mark} / {@code unmark}.
-     * Converts the user-provided task number (1-based) into a 0-based index for internal use.
-     *
-     * @param rest Rest of user input after {@code mark} or {@code unmark}.
-     * @param command Command word (e.g. {@code mark}).
-     * @param listSize Current number of tasks.
-     * @return 0-based index.
-     * @throws LunaException If the task number is missing, not a number, or out of range.
-     */
-    public static int parseIndex(String rest, String command, int listSize) throws LunaException {
-        rest = (rest == null) ? "" : rest.trim();
-        if (rest.isEmpty()) {
-            throw new LunaException("Please provide a task number. Example: " + command + " 2");
-        }
-
-        int num;
-        try {
-            num = Integer.parseInt(rest);
-        } catch (NumberFormatException e) {
-            throw new LunaException("Task number must be an integer. Example: " + command + " 2");
-        }
-
-        if (num < 1 || num > listSize) {
-            throw new LunaException("Task number is out of range. Use 1 to " + listSize + ".");
-        }
-
-        return num - 1;
     }
 }

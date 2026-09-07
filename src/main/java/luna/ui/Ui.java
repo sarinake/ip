@@ -1,5 +1,6 @@
 package luna.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import luna.task.Task;
@@ -73,6 +74,26 @@ public class Ui {
     }
 
     /**
+     * Shows confirmation that a task was marked as done.
+     *
+     * @param task The task that was marked.
+     */
+    public void showTaskMarked(Task task) {
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println(task);
+    }
+
+    /**
+     * Shows confirmation that a task was marked as not done.
+     *
+     * @param task The task that was unmarked.
+     */
+    public void showTaskUnmarked(Task task) {
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println(task);
+    }
+
+    /**
      * Shows confirmation that a task was added.
      *
      * @param task Task that was added.
@@ -97,23 +118,19 @@ public class Ui {
     }
 
     /**
-     * Shows confirmation that a task was marked as done.
+     * Prints all tasks in {@code matchingTasks}.
      *
-     * @param task Task that was marked.
+     * @param matchingTasks List of matching tasks.
      */
-    public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
-    }
-
-    /**
-     * Shows confirmation that a task was marked as not done.
-     *
-     * @param task Task that was unmarked.
-     */
-    public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
+    public void showMatchingTasks(List<Task> matchingTasks) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println("(No matching tasks found.)");
+            return;
+        }
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println((i + 1) + ". " + matchingTasks.get(i));
+        }
     }
 
     /**
