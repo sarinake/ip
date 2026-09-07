@@ -2,15 +2,15 @@ package luna;
 
 import java.time.LocalDate;
 
-import luna.task.Task;
-import luna.task.Todo;
+import luna.exception.LunaException;
+import luna.parser.Parser;
+import luna.storage.Storage;
 import luna.task.Deadline;
 import luna.task.Event;
+import luna.task.Task;
 import luna.task.TaskList;
+import luna.task.Todo;
 import luna.ui.Ui;
-import luna.parser.Parser;
-import luna.exception.LunaException;
-import luna.storage.Storage;
 
 /**
  * Runs the Luna task manager.
@@ -20,7 +20,7 @@ public class Luna {
     private final TaskList tasks;
     private final Storage storage = new Storage();
     private final Ui ui = new Ui();
-    
+
     /**
      * Creates a Luna instance and loads saved tasks from storage.
      */
@@ -82,29 +82,29 @@ public class Luna {
      */
     public void handleCommand(String command, String rest) throws LunaException {
         switch (command) {
-        case "list":
-            ui.showTaskList(tasks);
-            break;
-        case "mark":
-            markTask(rest);
-            break;
-        case "unmark":
-            unmarkTask(rest);
-            break;
-        case "delete":
-            deleteTask(rest);
-            break;
-        case "todo":
-            addTodo(rest);
-            break;
-        case "deadline":
-            addDeadline(rest);
-            break;
-        case "event":
-            addEvent(rest);
-            break;
-        default:
-            throw new LunaException("I'm sorry, I don't know what that means.");
+            case "list":
+                ui.showTaskList(tasks);
+                break;
+            case "mark":
+                markTask(rest);
+                break;
+            case "unmark":
+                unmarkTask(rest);
+                break;
+            case "delete":
+                deleteTask(rest);
+                break;
+            case "todo":
+                addTodo(rest);
+                break;
+            case "deadline":
+                addDeadline(rest);
+                break;
+            case "event":
+                addEvent(rest);
+                break;
+            default:
+                throw new LunaException("I'm sorry, I don't know what that means.");
         }
     }
 

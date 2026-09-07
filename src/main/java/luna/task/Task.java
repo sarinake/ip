@@ -78,14 +78,14 @@ public abstract class Task {
 
         String type = parts[0];
         switch (type) {
-        case "T":
-            return Todo.fromFileParts(parts);
-        case "D":
-            return Deadline.fromFileParts(parts);
-        case "E":
-            return Event.fromFileParts(parts);
-        default:
-            throw new LunaException("Unknown task type in data file: " + type);
+            case "T":
+                return Todo.fromFileParts(parts);
+            case "D":
+                return Deadline.fromFileParts(parts);
+            case "E":
+                return Event.fromFileParts(parts);
+            default:
+                throw new LunaException("Unknown task type in data file: " + type);
         }
     }
 

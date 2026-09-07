@@ -1,8 +1,11 @@
 package luna.task;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Stores the tasks managed by Luna and provides operations for accessing them.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks;
 

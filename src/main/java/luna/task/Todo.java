@@ -37,7 +37,7 @@ public class Todo extends Task {
         if (parts.length < 3) {
             throw new LunaException("Invalid todo line in data file");
         }
-        
+
         Todo todo = new Todo(parts[2]);
         if (parseDoneFlag(parts[1])) {
             todo.markDone();

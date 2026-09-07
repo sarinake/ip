@@ -11,7 +11,8 @@ public class Parser {
             + "this format: deadline <desc> /by <end>\n"
             + "Example: deadline return book /by 2019-10-15";
 
-    private static final String EVENT_FORMAT_MESSAGE = "An event must include a description, start date, and end date in "
+    private static final String EVENT_FORMAT_MESSAGE = "An event must include a description, start date, and "
+            + "end date in "
             + "this format: event <desc> /from <start> /to <end>\n"
             + "Example: event project meeting /from 2019-10-15 /to 2019-10-16";
 

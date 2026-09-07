@@ -1,17 +1,16 @@
 package luna.storage;
 
+import java.io.BufferedReader; // reads whole lines efficiently
+import java.io.BufferedWriter; // writes whole lines efficiently
 import java.io.File;
 import java.io.FileReader; // read characters one by one
 import java.io.FileWriter; // writes characters one by one
-import java.io.BufferedReader; // reads whole lines efficiently
-import java.io.BufferedWriter; // writes whole lines efficiently
 import java.io.IOException;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import luna.task.Task;
 import luna.exception.LunaException;
+import luna.task.Task;
 
 /**
  * Saves and loads tasks to/from a local text file.
@@ -48,10 +47,7 @@ public class Storage {
     public List<Task> load() throws LunaException {
         ArrayList<Task> tasks = new ArrayList<>();
 
-        /** 
-         * If there's no data file, simply return the empty list of tasks.
-         * No need to create the file just yet.
-         */
+        // If there is no data file, return the empty list without creating one yet.
         if (!file.exists()) {
             return tasks;
         }

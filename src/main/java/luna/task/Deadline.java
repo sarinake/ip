@@ -58,7 +58,7 @@ public class Deadline extends Task {
     /**
      * Parses a user-provided date string into {@link LocalDate}.
      *
-     * @param raw user input date string (expected yyyy-MM-dd)
+     * @param raw user input date string (expected yyyy-MM-dd).
      * @return parsed LocalDate
      * @throws LunaException if the date format is invalid
      */
