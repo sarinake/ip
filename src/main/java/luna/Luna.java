@@ -15,12 +15,31 @@ import luna.ui.Ui;
 
 /**
  * Runs the Luna task manager.
- * Reads commands from standard input and prints responses to standard output.
+ * Processes commands shared by the CLI and JavaFX GUI.
+ *
+ * <p>CLI and GUI follow these call paths:
+ * <pre>{@code
+ * CLI:
+ * main()
+ *   → run()
+ *     → getResponse()
+ *       → executeInput()
+ *         → handleCommand()
+ *           → addTodo(), markTask(), etc.
+ *
+ * GUI:
+ * MainWindow.handleUserInput()
+ *   → getResponse()
+ *     → executeInput()
+ *       → handleCommand()
+ *         → addTodo(), markTask(), etc.
+ * }</pre>
  */
 public class Luna {
     private final TaskList tasks;
     private final Storage storage = new Storage();
     private final Ui ui = new Ui();
+    private boolean shouldExit;
 
     /**
      * Creates a Luna instance and loads saved tasks from storage.
@@ -34,6 +53,7 @@ public class Luna {
             loadedTasks = new TaskList();
         }
         this.tasks = loadedTasks;
+        shouldExit = false;
     }
 
     /**
@@ -51,27 +71,63 @@ public class Luna {
     public void run() {
         ui.showWelcome();
 
-        while (true) {
+        while (!shouldExit) {
             String input = ui.readCommand();
+            String response = getResponse(input);
+            ui.showResponse(response);
 
-            try {
-                String[] parts = Parser.parse(input);
-                String command = parts[0];
-                String rest = parts[1];
-
-                if (command.equals("bye")) {
-                    ui.showBye();
-                    break;
-                }
-                handleCommand(command, rest);
-            } catch (LunaException e) {
-                ui.showError(e.getMessage());
+            if (!shouldExit) {
+                ui.showLine();
             }
-
-            ui.showLine();
         }
 
         ui.close();
+    }
+
+    /**
+     * Processes one command and returns Luna's response.
+     *
+     * @param input User command to process.
+     * @return Response to display.
+     */
+    public String getResponse(String input) {
+        try {
+            // MainWindow.java calls the public getResponse() method
+            // We hide the actual implementation as a private method executeInput()
+            return executeInput(input);
+        } catch (LunaException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * Parses and executes one user command.
+     *
+     * @param input User command to execute.
+     * @return Response produced by the command.
+     * @throws LunaException If the command is invalid or cannot be executed.
+     */
+    private String executeInput(String input) throws LunaException {
+        String[] parts = Parser.parse(input);
+        String command = parts[0];
+        String rest = parts[1];
+
+        if (command.equals("bye")) {
+            shouldExit = true;
+            // ui.showBye();
+            return "Bye. Hope to see you again soon!";
+        }
+
+        return handleCommand(command, rest);
+    }
+
+    /**
+     * Returns whether Luna has received the exit command.
+     *
+     * @return True if Luna should exit.
+     */
+    public boolean isExit() {
+        return shouldExit;
     }
 
     /**
@@ -79,46 +135,58 @@ public class Luna {
      *
      * @param command Command word from user input (e.g. {@code todo}).
      * @param rest Rest of user input after command word.
+     * @return Response produced by the command.
      * @throws LunaException If command is invalid or cannot be executed.
      */
-    private void handleCommand(String command, String rest) throws LunaException {
+    private String handleCommand(String command, String rest) throws LunaException {
         switch (command) {
             case "list":
-                ui.showTaskList(tasks);
-                break;
+                // ui.showTaskList(tasks);
+                return showTaskList(tasks);
             case "mark":
-                markTask(rest);
-                break;
+                return markTask(rest);
             case "unmark":
-                unmarkTask(rest);
-                break;
+                return unmarkTask(rest);
             case "delete":
-                deleteTask(rest);
-                break;
+                return deleteTask(rest);
             case "find":
-                findTasks(rest);
-                break;
+                return findTasks(rest);
             case "todo":
-                addTodo(rest);
-                break;
+                return addTodo(rest);
             case "deadline":
-                addDeadline(rest);
-                break;
+                return addDeadline(rest);
             case "event":
-                addEvent(rest);
-                break;
+                return addEvent(rest);
             default:
                 throw new LunaException("I'm sorry, I don't know what that means.");
         }
     }
 
     /**
+     * Formats the task list as a numbered, multi-line response.
+     *
+     * @param taskList Task list to format.
+     * @return Formatted task-list response.
+     */
+    private String showTaskList(TaskList taskList) {
+        StringBuilder response = new StringBuilder("Here are the tasks in your list:");
+        for (int i = 0; i < taskList.size(); i++) {
+            response.append("\n")
+                    .append(i + 1)
+                    .append(". ")
+                    .append(taskList.get(i));
+        }
+        return response.toString();
+    }
+
+    /**
      * Marks the task at the given task number as done.
      *
      * @param rest Rest of user input after command word (e.g. {@code mark}).
+     * @return Confirmation that the task was marked.
      * @throws LunaException If task number is invalid or task is already marked as done.
      */
-    private void markTask(String rest) throws LunaException {
+    private String markTask(String rest) throws LunaException {
         int index = Parser.parseIndex(rest, "mark", tasks.size());
         Task task = tasks.get(index);
 
@@ -128,16 +196,18 @@ public class Luna {
 
         task.markDone();
         storage.save(tasks.getUnmodifiableList());
-        ui.showTaskMarked(task);
+        // ui.showTaskMarked(task);
+        return "Nice! I've marked this task as done:\n" + task;
     }
 
     /**
      * Unmarks the task at the given task number (marks it as not done).
      *
      * @param rest Rest of user input after command word (e.g. {@code unmark}).
+     * @return Confirmation that the task was unmarked.
      * @throws LunaException If the task number is invalid or the task is not yet marked as done.
      */
-    private void unmarkTask(String rest) throws LunaException {
+    private String unmarkTask(String rest) throws LunaException {
         int index = Parser.parseIndex(rest, "unmark", tasks.size());
         Task task = tasks.get(index);
 
@@ -147,29 +217,34 @@ public class Luna {
 
         task.markUndone();
         storage.save(tasks.getUnmodifiableList());
-        ui.showTaskUnmarked(task);
+        // ui.showTaskUnmarked(task);
+        return "OK, I've marked this task as not done yet:\n" + task;
     }
 
     /**
      * Deletes the task at the given task number.
      *
      * @param rest Rest of user input after command word (e.g. {@code delete}).
+     * @return Confirmation that the task was deleted.
      * @throws LunaException If the task number is invalid.
      */
-    private void deleteTask(String rest) throws LunaException {
+    private String deleteTask(String rest) throws LunaException {
         int index = Parser.parseIndex(rest, "delete", tasks.size());
         Task removed = tasks.remove(index);
         storage.save(tasks.getUnmodifiableList());
-        ui.showTaskDeleted(removed, tasks.size());
+        // ui.showTaskDeleted(removed, tasks.size());
+        return "Noted. I've removed this task:\n" + removed
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
 
     /**
      * Finds tasks whose descriptions contain the given keyword (case-insensitive).
      *
      * @param rest Rest of user input after command word {@code find}.
+     * @return Matching tasks as a numbered, multi-line response.
      * @throws LunaException If the keyword is missing.
      */
-    private void findTasks(String rest) throws LunaException {
+    private String findTasks(String rest) throws LunaException {
         String keyword = Parser.parseKeyword(rest).toLowerCase();
 
         ArrayList<Task> matches = new ArrayList<>();
@@ -181,54 +256,72 @@ public class Luna {
             }
         }
 
-        ui.showMatchingTasks(matches);
+        // ui.showMatchingTasks(matches);
+        if (matches.isEmpty()) {
+            return "(No matching tasks found.)";
+        }
+
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            response.append("\n")
+                    .append(i + 1)
+                    .append(". ")
+                    .append(matches.get(i));
+        }
+        return response.toString();
     }
 
     /**
-     * Adds a task to the task list and prints a confirmation message.
+     * Adds a task to the task list and returns a confirmation message.
      *
      * @param task Task to add.
-     * @throws LunaException if the task cannot be added.
+     * @return Confirmation that the task was added.
+     * @throws LunaException If the task cannot be added.
      */
-    public void addTask(Task task) throws LunaException {
+    public String addTask(Task task) throws LunaException {
         tasks.add(task);
         storage.save(tasks.getUnmodifiableList());
-        ui.showTaskAdded(task, tasks.size());
+        // ui.showTaskAdded(task, tasks.size());
+        return "Got it. I've added this task:\n" + task
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
 
     /**
      * Adds a {@code Todo} task using the given user input.
      *
      * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @return Confirmation that the todo was added.
      * @throws LunaException If the description is missing.
      */
-    private void addTodo(String rest) throws LunaException {
+    private String addTodo(String rest) throws LunaException {
         String desc = Parser.parseTodo(rest);
-        addTask(new Todo(desc));
+        return addTask(new Todo(desc));
     }
 
     /**
      * Adds a {@code Deadline} task using the given user input.
      *
      * @param rest Rest of user input after command word (e.g. {@code deadline}).
+     * @return Confirmation that the deadline was added.
      * @throws LunaException If the input format is invalid.
      */
-    private void addDeadline(String rest) throws LunaException {
+    private String addDeadline(String rest) throws LunaException {
         String[] parts = Parser.parseDeadline(rest); // [desc, by]
         String desc = parts[0];
         String by = parts[1];
 
         LocalDate byDate = Deadline.parseDate(by);
-        addTask(new Deadline(desc, byDate));
+        return addTask(new Deadline(desc, byDate));
     }
 
     /**
      * Adds an {@code Event} task using the given user input.
      *
      * @param rest Rest of user input after command word (e.g. {@code event}).
+     * @return Confirmation that the event was added.
      * @throws LunaException If the input format is invalid.
      */
-    private void addEvent(String rest) throws LunaException {
+    private String addEvent(String rest) throws LunaException {
         String[] parts = Parser.parseEvent(rest); // [desc, from, to]
         String desc = parts[0];
         String from = parts[1];
@@ -240,6 +333,6 @@ public class Luna {
             throw new LunaException("The start date must be before the end date");
         }
 
-        addTask(new Event(desc, startDate, endDate));
+        return addTask(new Event(desc, startDate, endDate));
     }
 }
