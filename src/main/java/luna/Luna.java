@@ -1,15 +1,11 @@
 package luna;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import luna.command.Command;
 import luna.command.CommandFactory;
 import luna.exception.LunaException;
 import luna.parser.Parser;
 import luna.storage.Storage;
 import luna.task.TaskList;
-import luna.task.Todo;
 import luna.ui.Ui;
 
 /**
@@ -31,7 +27,7 @@ import luna.ui.Ui;
  *     → executeInput()
  *       → Command.execute()
  * }</pre>
- * 
+ *
  * The CLI and GUI call the public getResponse() method.
  * We hide the actual implementation as a private method executeInput().
  */
@@ -122,7 +118,7 @@ public class Luna {
     }
 
     /**
-     * Returns whether Luna has received the exit command (for GUI)
+     * Returns whether Luna has received the exit command (for GUI).
      *
      * @return True if Luna should exit.
      */

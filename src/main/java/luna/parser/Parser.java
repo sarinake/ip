@@ -38,11 +38,11 @@ public class Parser {
     }
 
     /**
-     * Extracts and parses the task index from {@code commandArgs} for {@code mark} / {@code unmark}.
+     * Extracts and parses the task index from the arguments of a task-number command.
      * Converts the user-provided task number (1-based) into a 0-based index for internal use.
      *
-     * @param commandArgs User input after {@code mark} or {@code unmark}.
-     * @param commandWord Command word (e.g. {@code mark}).
+     * @param commandArgs User input after the command word.
+     * @param commandWord Command word, such as {@code mark} or {@code delete}.
      * @param listSize Current number of tasks.
      * @return 0-based index.
      * @throws LunaException If the task number is missing/not a number/out of range.
@@ -98,7 +98,7 @@ public class Parser {
     }
 
     /**
-     * Parses the description and deadline of a todo.
+     * Parses the description and date of a deadline task.
      *
      * @param commandArgs User input after {@code deadline}.
      * @return String array of size 2: [description, by].
@@ -121,7 +121,7 @@ public class Parser {
     }
 
     /**
-     * Parses the description, startDate, and endDate of an event.
+     * Parses the description, start date, and end date of an event.
      *
      * @param commandArgs User input after {@code event}.
      * @return String array of size 3: [description, startDate, endDate].
