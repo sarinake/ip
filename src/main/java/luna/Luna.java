@@ -110,15 +110,15 @@ public class Luna {
      */
     private String executeInput(String input) throws LunaException {
         String[] parts = Parser.parse(input);
-        String command = parts[0];
-        String rest = parts[1];
+        String commandWord = parts[0];
+        String commandArgs = parts[1];
 
-        if (command.equals("bye")) {
+        if (commandWord.equals("bye")) {
             shouldExit = true;
             return "Bye. Hope to see you again soon!";
         }
 
-        return handleCommand(command, rest);
+        return handleCommand(commandWord, commandArgs);
     }
 
     /**
@@ -133,29 +133,29 @@ public class Luna {
     /**
      * Executes a single user command.
      *
-     * @param command Command word from user input (e.g. {@code todo}).
-     * @param rest Rest of user input after command word.
+     * @param commandWord Command word from user input (e.g. {@code todo}).
+     * @param commandArgs User input after the command word.
      * @return Response produced by the command.
      * @throws LunaException If command is invalid or cannot be executed.
      */
-    private String handleCommand(String command, String rest) throws LunaException {
-        switch (command) {
+    private String handleCommand(String commandWord, String commandArgs) throws LunaException {
+        switch (commandWord) {
             case "list":
                 return showTaskList(tasks);
             case "mark":
-                return markTask(rest);
+                return markTask(commandArgs);
             case "unmark":
-                return unmarkTask(rest);
+                return unmarkTask(commandArgs);
             case "delete":
-                return deleteTask(rest);
+                return deleteTask(commandArgs);
             case "find":
-                return findTasks(rest);
+                return findTasks(commandArgs);
             case "todo":
-                return addTodo(rest);
+                return addTodo(commandArgs);
             case "deadline":
-                return addDeadline(rest);
+                return addDeadline(commandArgs);
             case "event":
-                return addEvent(rest);
+                return addEvent(commandArgs);
             default:
                 throw new LunaException("I'm sorry, I don't know what that means.");
         }
@@ -181,13 +181,13 @@ public class Luna {
     /**
      * Marks the task at the given task number as done.
      *
-     * @param rest Rest of user input after command word (e.g. {@code mark}).
+     * @param commandArgs User input after command word (e.g. {@code mark}).
      * @return Confirmation that the task was marked.
      * @throws LunaException If task number is invalid or task is already marked as done.
      */
-    private String markTask(String rest) throws LunaException {
-        int index = Parser.parseIndex(rest, "mark", tasks.size());
-        Task task = tasks.get(index);
+    private String markTask(String commandArgs) throws LunaException {
+        int taskIndex = Parser.parseIndex(commandArgs, "mark", tasks.size());
+        Task task = tasks.get(taskIndex);
 
         if (task.isDone()) {
             throw new LunaException("This task is already marked as done.");
@@ -201,13 +201,13 @@ public class Luna {
     /**
      * Unmarks the task at the given task number (marks it as not done).
      *
-     * @param rest Rest of user input after command word (e.g. {@code unmark}).
+     * @param commandArgs User input after command word (e.g. {@code unmark}).
      * @return Confirmation that the task was unmarked.
      * @throws LunaException If the task number is invalid or the task is not yet marked as done.
      */
-    private String unmarkTask(String rest) throws LunaException {
-        int index = Parser.parseIndex(rest, "unmark", tasks.size());
-        Task task = tasks.get(index);
+    private String unmarkTask(String commandArgs) throws LunaException {
+        int taskIndex = Parser.parseIndex(commandArgs, "unmark", tasks.size());
+        Task task = tasks.get(taskIndex);
 
         if (!task.isDone()) {
             throw new LunaException("This task is not yet marked as done.");
@@ -221,27 +221,27 @@ public class Luna {
     /**
      * Deletes the task at the given task number.
      *
-     * @param rest Rest of user input after command word (e.g. {@code delete}).
+     * @param commandArgs User input after command word (e.g. {@code delete}).
      * @return Confirmation that the task was deleted.
      * @throws LunaException If the task number is invalid.
      */
-    private String deleteTask(String rest) throws LunaException {
-        int index = Parser.parseIndex(rest, "delete", tasks.size());
-        Task removed = tasks.remove(index);
+    private String deleteTask(String commandArgs) throws LunaException {
+        int taskIndex = Parser.parseIndex(commandArgs, "delete", tasks.size());
+        Task removedTask = tasks.remove(taskIndex);
         storage.save(tasks.getUnmodifiableList());
-        return "Noted. I've removed this task:\n" + removed
+        return "Noted. I've removed this task:\n" + removedTask
                 + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
 
     /**
      * Finds tasks whose descriptions contain the given keyword (case-insensitive).
      *
-     * @param rest Rest of user input after command word {@code find}.
+     * @param commandArgs User input after command word {@code find}.
      * @return Matching tasks as a numbered, multi-line response.
      * @throws LunaException If the keyword is missing.
      */
-    private String findTasks(String rest) throws LunaException {
-        String keyword = Parser.parseKeyword(rest).toLowerCase();
+    private String findTasks(String commandArgs) throws LunaException {
+        String keyword = Parser.parseKeyword(commandArgs).toLowerCase();
 
         ArrayList<Task> matches = new ArrayList<>();
         for (int i = 0; i < tasks.size(); i++) {
@@ -283,40 +283,40 @@ public class Luna {
     /**
      * Adds a {@code Todo} task using the given user input.
      *
-     * @param rest Rest of user input after command word (e.g. {@code todo}).
+     * @param commandArgs User input after command word (e.g. {@code todo}).
      * @return Confirmation that the todo was added.
      * @throws LunaException If the description is missing.
      */
-    private String addTodo(String rest) throws LunaException {
-        String desc = Parser.parseTodo(rest);
+    private String addTodo(String commandArgs) throws LunaException {
+        String desc = Parser.parseTodo(commandArgs); // [desc]
         return addTask(new Todo(desc));
     }
 
     /**
      * Adds a {@code Deadline} task using the given user input.
      *
-     * @param rest Rest of user input after command word (e.g. {@code deadline}).
+     * @param commandArgs User input after command word (e.g. {@code deadline}).
      * @return Confirmation that the deadline was added.
      * @throws LunaException If the input format is invalid.
      */
-    private String addDeadline(String rest) throws LunaException {
-        String[] parts = Parser.parseDeadline(rest); // [desc, by]
+    private String addDeadline(String commandArgs) throws LunaException {
+        String[] parts = Parser.parseDeadline(commandArgs); // [desc, by]
         String desc = parts[0];
         String by = parts[1];
 
-        LocalDate byDate = TaskDateFormatter.parse(by);
-        return addTask(new Deadline(desc, byDate));
+        LocalDate deadlineDate = TaskDateFormatter.parse(by);
+        return addTask(new Deadline(desc, deadlineDate));
     }
 
     /**
      * Adds an {@code Event} task using the given user input.
      *
-     * @param rest Rest of user input after command word (e.g. {@code event}).
+     * @param commandArgs User input after command word (e.g. {@code event}).
      * @return Confirmation that the event was added.
      * @throws LunaException If the input format is invalid.
      */
-    private String addEvent(String rest) throws LunaException {
-        String[] parts = Parser.parseEvent(rest); // [desc, from, to]
+    private String addEvent(String commandArgs) throws LunaException {
+        String[] parts = Parser.parseEvent(commandArgs); // [desc, from, to]
         String desc = parts[0];
         String from = parts[1];
         String to = parts[2];

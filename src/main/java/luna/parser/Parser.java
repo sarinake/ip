@@ -25,57 +25,57 @@ public class Parser {
      * @throws LunaException If user input is empty.
      */
     public static String[] parse(String input) throws LunaException {
-        input = input.trim();
-        if (input.isEmpty()) {
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
             throw new LunaException("Please enter a command");
         }
 
-        String[] parts = input.split("\\s+", 2); // Splits input by one or more whitespaces
-        String command = parts[0].toLowerCase();
-        String rest = (parts.length == 2) ? parts[1].trim() : "";
+        String[] parts = trimmedInput.split("\\s+", 2); // Splits input by one or more whitespaces
+        String commandWord = parts[0].toLowerCase();
+        String commandArgs = (parts.length == 2) ? parts[1].trim() : "";
 
-        return new String[] {command, rest};
+        return new String[] {commandWord, commandArgs};
     }
 
     /**
-     * Extracts and parses the task index from {@code rest} for {@code mark} / {@code unmark}.
+     * Extracts and parses the task index from {@code commandArgs} for {@code mark} / {@code unmark}.
      * Converts the user-provided task number (1-based) into a 0-based index for internal use.
      *
-     * @param rest Rest of user input after {@code mark} or {@code unmark}.
-     * @param command Command word (e.g. {@code mark}).
+     * @param commandArgs User input after {@code mark} or {@code unmark}.
+     * @param commandWord Command word (e.g. {@code mark}).
      * @param listSize Current number of tasks.
      * @return 0-based index.
      * @throws LunaException If the task number is missing/not a number/out of range.
      */
-    public static int parseIndex(String rest, String command, int listSize) throws LunaException {
-        rest = (rest == null) ? "" : rest.trim();
-        if (rest.isEmpty()) {
-            throw new LunaException("Please provide a task number. Example: " + command + " 2");
+    public static int parseIndex(String commandArgs, String commandWord, int listSize) throws LunaException {
+        String trimmedArgs = normalizeArgs(commandArgs);
+        if (trimmedArgs.isEmpty()) {
+            throw new LunaException("Please provide a task number. Example: " + commandWord + " 2");
         }
 
-        int num;
+        int taskNumber;
         try {
-            num = Integer.parseInt(rest);
+            taskNumber = Integer.parseInt(trimmedArgs);
         } catch (NumberFormatException e) {
-            throw new LunaException("Task number must be an integer. Example: " + command + " 2");
+            throw new LunaException("Task number must be an integer. Example: " + commandWord + " 2");
         }
 
-        if (num < 1 || num > listSize) {
+        if (taskNumber < 1 || taskNumber > listSize) {
             throw new LunaException("Task number is out of range. Use 1 to " + listSize + ".");
         }
 
-        return num - 1;
+        return taskNumber - 1;
     }
 
     /**
      * Parses the keyword for the user command {@code find}.
      *
-     * @param rest Rest of user input after {@code find}.
+     * @param commandArgs User input after {@code find}.
      * @return Keyword to search for.
      * @throws LunaException If the keyword is missing.
      */
-    public static String parseKeyword(String rest) throws LunaException {
-        String keyword = (rest == null) ? "" : rest.trim();
+    public static String parseKeyword(String commandArgs) throws LunaException {
+        String keyword = normalizeArgs(commandArgs);
         if (keyword.isEmpty()) {
             throw new LunaException("Please provide a keyword to search for. Example: find book");
         }
@@ -85,12 +85,12 @@ public class Parser {
     /**
      * Parses the description of a todo.
      *
-     * @param rest Rest of user input after {@code todo}.
+     * @param commandArgs User input after {@code todo}.
      * @return Description.
-     * @throws LunaException If rest of the user input is empty.
+     * @throws LunaException If the command arguments are empty.
      */
-    public static String parseTodo(String rest) throws LunaException {
-        String desc = (rest == null) ? "" : rest.trim();
+    public static String parseTodo(String commandArgs) throws LunaException {
+        String desc = normalizeArgs(commandArgs);
         if (desc.isEmpty()) {
             throw new LunaException("The description of a todo cannot be empty. Example: todo read book");
         }
@@ -100,19 +100,19 @@ public class Parser {
     /**
      * Parses the description and deadline of a todo.
      *
-     * @param rest Rest of user input after {@code deadline}.
+     * @param commandArgs User input after {@code deadline}.
      * @return String array of size 2: [description, by].
      * @throws LunaException If input format is invalid.
      */
-    public static String[] parseDeadline(String rest) throws LunaException {
-        rest = (rest == null) ? "" : rest.trim();
-        if (rest.isEmpty() || !rest.contains(" /by ")) {
+    public static String[] parseDeadline(String commandArgs) throws LunaException {
+        String trimmedArgs = normalizeArgs(commandArgs);
+        if (trimmedArgs.isEmpty() || !trimmedArgs.contains(" /by ")) {
             throw new LunaException(FORMAT_MESSAGE_DEADLINE);
         }
 
-        int byPos = rest.indexOf(" /by ");
-        String desc = rest.substring(0, byPos).trim();
-        String by = rest.substring(byPos + " /by ".length()).trim();
+        int byPos = trimmedArgs.indexOf(" /by ");
+        String desc = trimmedArgs.substring(0, byPos).trim();
+        String by = trimmedArgs.substring(byPos + " /by ".length()).trim();
         if (desc.isEmpty() || by.isEmpty()) {
             throw new LunaException(FORMAT_MESSAGE_DEADLINE);
         }
@@ -123,29 +123,39 @@ public class Parser {
     /**
      * Parses the description, startDate, and endDate of an event.
      *
-     * @param rest Rest of user input after {@code event}.
+     * @param commandArgs User input after {@code event}.
      * @return String array of size 3: [description, startDate, endDate].
      * @throws LunaException If input format is invalid.
      */
-    public static String[] parseEvent(String rest) throws LunaException {
-        rest = (rest == null) ? "" : rest.trim();
-        if (rest.isEmpty() || !rest.contains(" /from ") || !rest.contains(" /to ")) {
+    public static String[] parseEvent(String commandArgs) throws LunaException {
+        String trimmedArgs = normalizeArgs(commandArgs);
+        if (trimmedArgs.isEmpty() || !trimmedArgs.contains(" /from ") || !trimmedArgs.contains(" /to ")) {
             throw new LunaException(FORMAT_MESSAGE_EVENT);
         }
 
-        int fromPos = rest.indexOf(" /from ");
-        int toPos = rest.indexOf(" /to ");
+        int fromPos = trimmedArgs.indexOf(" /from ");
+        int toPos = trimmedArgs.indexOf(" /to ");
         if (fromPos >= toPos) {
             throw new LunaException(FORMAT_MESSAGE_EVENT);
         }
 
-        String desc = rest.substring(0, fromPos).trim();
-        String from = rest.substring(fromPos + " /from ".length(), toPos).trim();
-        String to = rest.substring(toPos + " /to ".length()).trim();
+        String desc = trimmedArgs.substring(0, fromPos).trim();
+        String from = trimmedArgs.substring(fromPos + " /from ".length(), toPos).trim();
+        String to = trimmedArgs.substring(toPos + " /to ".length()).trim();
         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new LunaException(FORMAT_MESSAGE_EVENT);
         }
 
         return new String[] {desc, from, to};
+    }
+
+    /**
+     * Returns trimmed command arguments, or an empty string if they are absent.
+     *
+     * @param commandArgs Command arguments to normalize.
+     * @return Normalized command arguments.
+     */
+    private static String normalizeArgs(String commandArgs) {
+        return commandArgs == null ? "" : commandArgs.trim();
     }
 }
