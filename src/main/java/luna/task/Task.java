@@ -105,9 +105,17 @@ public abstract class Task {
      *
      * @param doneFlag Done flag from file (expected {@code "0"} or {@code "1"}).
      * @return {@code true} if the flag is {@code "1"}, otherwise {@code false}.
-     */
-    protected static boolean parseDoneFlag(String doneFlag) {
-        return "1".equals(doneFlag);
+     * @throws LunaException If the done flag is invalid.
+    */
+    protected static boolean parseDoneFlag(String doneFlag) throws LunaException {
+        switch (doneFlag) {
+            case "0":
+                return false;
+            case "1":
+                return true;
+            default:
+                throw new LunaException("Invalid completion flag in data file: " + doneFlag);
+        }
     }
 
     /**
