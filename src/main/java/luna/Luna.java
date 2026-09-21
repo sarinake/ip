@@ -272,7 +272,7 @@ public class Luna {
      * @return Confirmation that the task was added.
      * @throws LunaException If the task cannot be added.
      */
-    public String addTask(Task task) throws LunaException {
+    private String addTask(Task task) throws LunaException {
         tasks.add(task);
         storage.save(tasks.getUnmodifiableList());
         return "Got it. I've added this task:\n" + task

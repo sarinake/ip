@@ -13,8 +13,8 @@ public class Event extends Task {
     private static final DateTimeFormatter DATE_INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
     private static final DateTimeFormatter DATE_OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
     /**
      * Creates an event task.
@@ -37,7 +37,7 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        return "E | " + formatDoneFlag(isDone) + " | " + description + " | "
+        return "E | " + formatDoneFlag(isDone()) + " | " + getDescription() + " | "
                 + startDate.format(DATE_INPUT_FORMAT) + " | " + endDate.format(DATE_INPUT_FORMAT);
     }
 

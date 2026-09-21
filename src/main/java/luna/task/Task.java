@@ -6,8 +6,8 @@ import luna.exception.LunaException;
  * Represents a task with a description and completion status.
  */
 public abstract class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     /**
      * Creates a task with the given description.
