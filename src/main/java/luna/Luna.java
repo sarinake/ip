@@ -114,7 +114,6 @@ public class Luna {
 
         if (command.equals("bye")) {
             shouldExit = true;
-            // ui.showBye();
             return "Bye. Hope to see you again soon!";
         }
 
@@ -141,7 +140,6 @@ public class Luna {
     private String handleCommand(String command, String rest) throws LunaException {
         switch (command) {
             case "list":
-                // ui.showTaskList(tasks);
                 return showTaskList(tasks);
             case "mark":
                 return markTask(rest);
@@ -196,7 +194,6 @@ public class Luna {
 
         task.markDone();
         storage.save(tasks.getUnmodifiableList());
-        // ui.showTaskMarked(task);
         return "Nice! I've marked this task as done:\n" + task;
     }
 
@@ -217,7 +214,6 @@ public class Luna {
 
         task.markUndone();
         storage.save(tasks.getUnmodifiableList());
-        // ui.showTaskUnmarked(task);
         return "OK, I've marked this task as not done yet:\n" + task;
     }
 
@@ -232,7 +228,6 @@ public class Luna {
         int index = Parser.parseIndex(rest, "delete", tasks.size());
         Task removed = tasks.remove(index);
         storage.save(tasks.getUnmodifiableList());
-        // ui.showTaskDeleted(removed, tasks.size());
         return "Noted. I've removed this task:\n" + removed
                 + "\nNow you have " + tasks.size() + " tasks in the list.";
     }
@@ -256,7 +251,6 @@ public class Luna {
             }
         }
 
-        // ui.showMatchingTasks(matches);
         if (matches.isEmpty()) {
             return "(No matching tasks found.)";
         }
@@ -281,7 +275,6 @@ public class Luna {
     public String addTask(Task task) throws LunaException {
         tasks.add(task);
         storage.save(tasks.getUnmodifiableList());
-        // ui.showTaskAdded(task, tasks.size());
         return "Got it. I've added this task:\n" + task
                 + "\nNow you have " + tasks.size() + " tasks in the list.";
     }

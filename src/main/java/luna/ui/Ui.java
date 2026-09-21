@@ -1,10 +1,6 @@
 package luna.ui;
 
-import java.util.List;
 import java.util.Scanner;
-
-import luna.task.Task;
-import luna.task.TaskList;
 
 /**
  * Handles command-line input and output for Luna.
@@ -37,13 +33,6 @@ public class Ui {
     }
 
     /**
-     * Shows the exit message.
-     */
-    public void showBye() {
-        System.out.println("Bye. Hope to see you again soon!");
-    }
-
-    /**
      * Shows an error message.
      *
      * @param message Error message to show.
@@ -68,78 +57,6 @@ public class Ui {
      */
     public String readCommand() {
         return scanner.nextLine().trim();
-    }
-
-    /**
-     * Prints all tasks currently in the task list.
-     *
-     * @param tasks Task list to display.
-     */
-    public void showTaskList(TaskList tasks) {
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
-        }
-    }
-
-    /**
-     * Shows confirmation that a task was marked as done.
-     *
-     * @param task The task that was marked.
-     */
-    public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
-    }
-
-    /**
-     * Shows confirmation that a task was marked as not done.
-     *
-     * @param task The task that was unmarked.
-     */
-    public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
-    }
-
-    /**
-     * Shows confirmation that a task was added.
-     *
-     * @param task Task that was added.
-     * @param totalTasks Updated number of tasks in the list.
-     */
-    public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + totalTasks + " tasks in the list.");
-    }
-
-    /**
-     * Shows confirmation that a task was removed.
-     *
-     * @param task Task that was removed.
-     * @param totalTasks Updated number of tasks in the list.
-     */
-    public void showTaskDeleted(Task task, int totalTasks) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + totalTasks + " tasks in the list.");
-    }
-
-    /**
-     * Prints all tasks in {@code matchingTasks}.
-     *
-     * @param matchingTasks List of matching tasks.
-     */
-    public void showMatchingTasks(List<Task> matchingTasks) {
-        if (matchingTasks.isEmpty()) {
-            System.out.println("(No matching tasks found.)");
-            return;
-        }
-        System.out.println("Here are the matching tasks in your list:");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println((i + 1) + ". " + matchingTasks.get(i));
-        }
     }
 
     /**
