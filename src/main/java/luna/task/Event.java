@@ -1,8 +1,6 @@
 package luna.task;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import luna.exception.LunaException;
 
@@ -10,9 +8,6 @@ import luna.exception.LunaException;
  * Represents a {@code Task} with an associated start and end date.
  */
 public class Event extends Task {
-    private static final DateTimeFormatter DATE_INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
-    private static final DateTimeFormatter DATE_OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
-
     private final LocalDate startDate;
     private final LocalDate endDate;
 
@@ -32,13 +27,15 @@ public class Event extends Task {
     @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(),
-                startDate.format(DATE_OUTPUT_FORMAT), endDate.format(DATE_OUTPUT_FORMAT));
+                TaskDateFormatter.formatForDisplay(startDate),
+                TaskDateFormatter.formatForDisplay(endDate));
     }
 
     @Override
     public String toFileString() {
         return "E | " + formatDoneFlag(isDone()) + " | " + getDescription() + " | "
-                + startDate.format(DATE_INPUT_FORMAT) + " | " + endDate.format(DATE_INPUT_FORMAT);
+                + TaskDateFormatter.formatForStorage(startDate) + " | "
+                + TaskDateFormatter.formatForStorage(endDate);
     }
 
     /**
@@ -53,27 +50,12 @@ public class Event extends Task {
             throw new LunaException("Invalid event line in data file.");
         }
 
-        LocalDate from = parseDate(parts[3]);
-        LocalDate to = parseDate(parts[4]);
+        LocalDate from = TaskDateFormatter.parse(parts[3]);
+        LocalDate to = TaskDateFormatter.parse(parts[4]);
         Event event = new Event(parts[2], from, to);
         if (parseDoneFlag(parts[1])) {
             event.markDone();
         }
         return event;
-    }
-
-    /**
-     * Parses a user-provided date string into {@link LocalDate}.
-     *
-     * @param raw User input date string (expected yyyy-MM-dd).
-     * @return Parsed date.
-     * @throws LunaException If the date format is invalid.
-     */
-    public static LocalDate parseDate(String raw) throws LunaException {
-        try {
-            return LocalDate.parse(raw, DATE_INPUT_FORMAT);
-        } catch (DateTimeParseException e) {
-            throw new LunaException("Invalid date format. Use yyyy-MM-dd (e.g., 2019-10-15)");
-        }
     }
 }

@@ -9,6 +9,7 @@ import luna.storage.Storage;
 import luna.task.Deadline;
 import luna.task.Event;
 import luna.task.Task;
+import luna.task.TaskDateFormatter;
 import luna.task.TaskList;
 import luna.task.Todo;
 import luna.ui.Ui;
@@ -303,7 +304,7 @@ public class Luna {
         String desc = parts[0];
         String by = parts[1];
 
-        LocalDate byDate = Deadline.parseDate(by);
+        LocalDate byDate = TaskDateFormatter.parse(by);
         return addTask(new Deadline(desc, byDate));
     }
 
@@ -320,8 +321,8 @@ public class Luna {
         String from = parts[1];
         String to = parts[2];
 
-        LocalDate startDate = Event.parseDate(from);
-        LocalDate endDate = Event.parseDate(to);
+        LocalDate startDate = TaskDateFormatter.parse(from);
+        LocalDate endDate = TaskDateFormatter.parse(to);
         if (startDate.isAfter(endDate)) {
             throw new LunaException("The start date must be before the end date");
         }
