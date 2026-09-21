@@ -9,7 +9,7 @@ describe checks and are not entered into the program.
 
 - Java version: Java 25
 - Entry point: `luna.Luna`
-- Working directory: one isolated temporary directory shared by all four
+- Working directory: one isolated temporary directory shared by all five
   sessions, initially without `data/luna.txt`
 - Comparison: exact text, punctuation, line order, and blank lines; only LF/CRLF
   differences and one final newline are ignored
@@ -616,6 +616,175 @@ ____________________________________________________________
 
 ```text
 bye
+```
+
+**Expected output:**
+
+```text
+Bye. Hope to see you again soon!
+```
+
+## UI-005: Short command aliases
+
+**Aim:** Verify that every short command alias behaves like its corresponding
+full command, including aliases that accept arguments.
+
+**Preconditions:** Start a new process in the same isolated working directory
+after UI-004. Its `data/luna.txt` must still contain the two tasks restored in
+UI-003.
+
+**Inputs and expected outputs:**
+
+### Command 1 — List tasks with `ls`
+
+**Input:**
+
+```text
+ls
+```
+
+**Expected output:**
+
+```text
+Hello! I'm Luna
+What can I do for you?
+
+Here are the tasks in your list:
+1. [T][X] read book
+2. [D][ ] return book (by: Oct 15 2019)
+____________________________________________________________
+
+```
+
+### Command 2 — Add a todo with `t`
+
+**Input:**
+
+```text
+t buy milk
+```
+
+**Expected output:**
+
+```text
+Got it. I've added this task:
+[T][ ] buy milk
+Now you have 3 tasks in the list.
+____________________________________________________________
+
+```
+
+### Command 3 — Add a deadline with `d`
+
+**Input:**
+
+```text
+d submit report /by 2026-11-30
+```
+
+**Expected output:**
+
+```text
+Got it. I've added this task:
+[D][ ] submit report (by: Nov 30 2026)
+Now you have 4 tasks in the list.
+____________________________________________________________
+
+```
+
+### Command 4 — Add an event with `e`
+
+**Input:**
+
+```text
+e conference /from 2026-10-01 /to 2026-10-02
+```
+
+**Expected output:**
+
+```text
+Got it. I've added this task:
+[E][ ] conference (from: Oct 01 2026 to: Oct 02 2026)
+Now you have 5 tasks in the list.
+____________________________________________________________
+
+```
+
+### Command 5 — Mark a task with `m`
+
+**Input:**
+
+```text
+m 3
+```
+
+**Expected output:**
+
+```text
+Nice! I've marked this task as done:
+[T][X] buy milk
+____________________________________________________________
+
+```
+
+### Command 6 — Unmark a task with `u`
+
+**Input:**
+
+```text
+u 3
+```
+
+**Expected output:**
+
+```text
+OK, I've marked this task as not done yet:
+[T][ ] buy milk
+____________________________________________________________
+
+```
+
+### Command 7 — Find a task with `f`
+
+**Input:**
+
+```text
+f report
+```
+
+**Expected output:**
+
+```text
+Here are the matching tasks in your list:
+1. [D][ ] submit report (by: Nov 30 2026)
+____________________________________________________________
+
+```
+
+### Command 8 — Delete a task with `del`
+
+**Input:**
+
+```text
+del 5
+```
+
+**Expected output:**
+
+```text
+Noted. I've removed this task:
+[E][ ] conference (from: Oct 01 2026 to: Oct 02 2026)
+Now you have 4 tasks in the list.
+____________________________________________________________
+
+```
+
+### Command 9 — Exit with `q`
+
+**Input:**
+
+```text
+q
 ```
 
 **Expected output:**

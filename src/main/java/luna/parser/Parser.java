@@ -1,5 +1,7 @@
 package luna.parser;
 
+import java.util.Map;
+
 import luna.exception.LunaException;
 
 /**
@@ -7,6 +9,19 @@ import luna.exception.LunaException;
  * Validates input format before Luna tries to execute anything.
  */
 public class Parser {
+    /** Maps command words to their shorter aliases. */
+    private static final Map<String, String> COMMAND_ALIASES = Map.ofEntries(
+            Map.entry("ls", "list"),
+            Map.entry("t", "todo"),
+            Map.entry("d", "deadline"),
+            Map.entry("e", "event"),
+            Map.entry("m", "mark"),
+            Map.entry("u", "unmark"),
+            Map.entry("del", "delete"),
+            Map.entry("f", "find"),
+            Map.entry("q", "bye")
+    );
+
     private static final String FORMAT_MESSAGE_DEADLINE = "A deadline must include a description and end date in "
             + "this format: deadline <desc> /by <end>\n"
             + "Example: deadline return book /by 2019-10-15";
@@ -17,7 +32,7 @@ public class Parser {
             + "Example: event project meeting /from 2019-10-15 /to 2019-10-16";
 
     /**
-     * Splits raw input into [commandWord, rest of arguments].
+     * Splits raw input into [commandWord, rest of arguments] and resolves command aliases.
      * Example: [todo, description].
      *
      * @param input Raw user input.
@@ -30,8 +45,12 @@ public class Parser {
             throw new LunaException("Please enter a command");
         }
 
-        String[] parts = trimmedInput.split("\\s+", 2); // Splits input by one or more whitespaces
+        // Splits input by one or more whitespaces
+        String[] parts = trimmedInput.split("\\s+", 2);
         String commandWord = parts[0].toLowerCase();
+        // If commandWord is an alias we get its corresponding value (the full command)
+        // Otherwise just return the commandWord as is
+        commandWord = COMMAND_ALIASES.getOrDefault(commandWord, commandWord);
         String commandArgs = (parts.length == 2) ? parts[1].trim() : "";
 
         return new String[] {commandWord, commandArgs};

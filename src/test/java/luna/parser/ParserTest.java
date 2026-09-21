@@ -17,6 +17,30 @@ public class ParserTest {
             + "this format: deadline <desc> /by <end>\n"
             + "Example: deadline return book /by 2019-10-15";
 
+    @Test
+    void parse_commandAliases_resolvesCanonicalCommands() throws LunaException {
+        String[][] aliasMappings = {
+            {"ls", "list"},
+            {"t", "todo"},
+            {"d", "deadline"},
+            {"e", "event"},
+            {"m", "mark"},
+            {"u", "unmark"},
+            {"del", "delete"},
+            {"f", "find"},
+            {"q", "bye"}
+        };
+
+        for (String[] aliasMapping : aliasMappings) {
+            assertEquals(aliasMapping[1], Parser.parse(aliasMapping[0])[0]);
+        }
+    }
+
+    @Test
+    void parse_uppercaseAliasWithArguments_resolvesCommandAndPreservesArguments() throws LunaException {
+        assertArrayEquals(new String[] {"todo", "read book"}, Parser.parse("T read book"));
+    }
+
     // =======================
     // Tests for parseTodo()
     // =======================
