@@ -109,6 +109,8 @@ public class Luna {
      */
     private String executeInput(String input) throws LunaException {
         String[] parts = Parser.parse(input);
+        assert parts.length == 2 : "Parser.parse() should return [command, rest of arguments]";
+
         String command = parts[0];
         String rest = parts[1];
 
@@ -307,6 +309,8 @@ public class Luna {
      */
     private String addDeadline(String rest) throws LunaException {
         String[] parts = Parser.parseDeadline(rest); // [desc, by]
+        assert parts.length == 2 : "Parser.parseDeadline() must return [description, date]";
+
         String desc = parts[0];
         String by = parts[1];
 
@@ -323,6 +327,8 @@ public class Luna {
      */
     private String addEvent(String rest) throws LunaException {
         String[] parts = Parser.parseEvent(rest); // [desc, from, to]
+        assert parts.length == 3 : "Parser.parseEvent() must return description, start date, and end date";
+        
         String desc = parts[0];
         String from = parts[1];
         String to = parts[2];
