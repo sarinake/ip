@@ -1,11 +1,15 @@
 package luna;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import luna.command.Command;
 import luna.command.CommandFactory;
 import luna.exception.LunaException;
 import luna.parser.Parser;
 import luna.storage.Storage;
 import luna.task.TaskList;
+import luna.task.Todo;
 import luna.ui.Ui;
 
 /**
@@ -103,6 +107,7 @@ public class Luna {
      */
     private String executeInput(String input) throws LunaException {
         String[] parts = Parser.parse(input);
+        assert parts.length == 2 : "Parser.parse() should return [command, rest of arguments]";
         String commandWord = parts[0];
         String commandArgs = parts[1];
 
