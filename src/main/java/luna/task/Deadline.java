@@ -41,7 +41,7 @@ public class Deadline extends Task {
      * @throws LunaException If the line format is invalid.
      */
     protected static Deadline fromFileParts(String[] parts) throws LunaException {
-        if (parts.length < 4) {
+        if (parts.length != 4) {
             throw new LunaException("Invalid deadline line in data file");
         }
 

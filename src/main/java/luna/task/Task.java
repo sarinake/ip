@@ -82,7 +82,7 @@ public abstract class Task {
      */
     public static Task fromFileLine(String line) throws LunaException {
         String[] parts = line.split("\\s*\\|\\s*");
-        if (parts.length < 3) {
+        if (parts.length != 3) {
             throw new LunaException("Invalid line in data file: " + line);
         }
 

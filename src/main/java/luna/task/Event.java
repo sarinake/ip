@@ -46,7 +46,7 @@ public class Event extends Task {
      * @throws LunaException If the line format is invalid.
      */
     protected static Event fromFileParts(String[] parts) throws LunaException {
-        if (parts.length < 5) {
+        if (parts.length != 5) {
             throw new LunaException("Invalid event line in data file.");
         }
 

@@ -113,7 +113,8 @@ public class Parser {
         if (desc.isEmpty()) {
             throw new LunaException("The description of a todo cannot be empty. Example: todo read book");
         }
-        return desc;
+
+        return validateDescription(desc);
     }
 
     /**
@@ -136,7 +137,7 @@ public class Parser {
             throw new LunaException(FORMAT_MESSAGE_DEADLINE);
         }
 
-        return new String[] {desc, by};
+        return new String[] {validateDescription(desc), by};
     }
 
     /**
@@ -165,7 +166,7 @@ public class Parser {
             throw new LunaException(FORMAT_MESSAGE_EVENT);
         }
 
-        return new String[] {desc, from, to};
+        return new String[] {validateDescription(desc), from, to};
     }
 
     /**
@@ -176,5 +177,19 @@ public class Parser {
      */
     private static String normalizeArgs(String commandArgs) {
         return commandArgs == null ? "" : commandArgs.trim();
+    }
+
+    /**
+     * Validates that a task description can be stored safely.
+     *
+     * @param description Description to validate.
+     * @return Validated description.
+     * @throws LunaException If the description contains a reserved character.
+     */
+    private static String validateDescription(String description) throws LunaException {
+        if (description.contains("|")) {
+            throw new LunaException("Task descriptions cannot contain the character '|'.");
+        }
+        return description;
     }
 }
