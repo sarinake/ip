@@ -1,12 +1,12 @@
 .root-pane {
-    -fx-background-color: #f7f7fb;
+    -fx-background-color: #fff7fa;
     -fx-font-family: "Inter", "SF Pro Text", "Segoe UI", sans-serif;
     -fx-font-size: 13px;
 }
 
 .conversation-scroll,
 .conversation-scroll > .viewport {
-    -fx-background-color: #f7f7fb;
+    -fx-background-color: #fff7fa;
 }
 
 .conversation-scroll {
@@ -16,7 +16,7 @@
 }
 
 .dialog-container {
-    -fx-background-color: #f7f7fb;
+    -fx-background-color: #fff7fa;
     -fx-padding: 10px 0 12px 0;
 }
 
@@ -32,46 +32,46 @@
 
 .luna-dialog .dialog-label {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e4e7ef;
+    -fx-border-color: #f1d6e0;
     -fx-border-radius: 12px;
-    -fx-text-fill: #252733;
+    -fx-text-fill: #3c2730;
 }
 
 .user-dialog .dialog-label {
-    -fx-background-color: #6153bd;
+    -fx-background-color: #c74375;
     -fx-text-fill: #ffffff;
 }
 
 .avatar-frame {
-    -fx-background-color: #eae7fb;
+    -fx-background-color: #fde5ee;
     -fx-background-radius: 11px;
-    -fx-border-color: #d8d3f3;
+    -fx-border-color: #efbfd0;
     -fx-border-radius: 11px;
     -fx-border-width: 1px;
 }
 
 .composer {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e1e3eb transparent transparent transparent;
+    -fx-border-color: #f0d3de transparent transparent transparent;
     -fx-border-width: 1px 0 0 0;
 }
 
 .command-field {
-    -fx-background-color: #f3f3f8;
+    -fx-background-color: #fff0f5;
     -fx-background-radius: 9px;
     -fx-border-color: transparent;
     -fx-padding: 9px 11px;
-    -fx-prompt-text-fill: #858898;
+    -fx-prompt-text-fill: #936a79;
 }
 
 .command-field:focused {
     -fx-background-color: #ffffff;
-    -fx-border-color: #7b6fd0;
+    -fx-border-color: #d65384;
     -fx-border-radius: 9px;
 }
 
 .send-button {
-    -fx-background-color: #6153bd;
+    -fx-background-color: #c74375;
     -fx-background-radius: 9px;
     -fx-font-weight: 700;
     -fx-padding: 9px 16px;
@@ -79,10 +79,10 @@
 }
 
 .send-button:hover {
-    -fx-background-color: #5143a9;
+    -fx-background-color: #b33565;
     -fx-cursor: hand;
 }
 
 .send-button:pressed {
-    -fx-background-color: #44388f;
+    -fx-background-color: #982950;
 }
