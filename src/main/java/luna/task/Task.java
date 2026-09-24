@@ -28,7 +28,6 @@ public abstract class Task {
         return this.description;
     }
 
-
     /**
      * Marks the task as done.
      */

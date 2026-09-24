@@ -35,7 +35,7 @@ asdkjgsd
 **Expected output:**
 
 ```text
-Hello! I'm Luna
+Hello! I'm Luna!
 What can I do for you?
 
 I'm sorry, I don't know what that means.
@@ -79,7 +79,7 @@ todo
 **Expected output:**
 
 ```text
-Hello! I'm Luna
+Hello! I'm Luna!
 What can I do for you?
 
 The description of a todo cannot be empty. Example: todo read book
@@ -514,7 +514,7 @@ list
 **Expected output:**
 
 ```text
-Hello! I'm Luna
+Hello! I'm Luna!
 What can I do for you?
 
 Here are the tasks in your list:
@@ -551,7 +551,7 @@ find
 **Expected output:**
 
 ```text
-Hello! I'm Luna
+Hello! I'm Luna!
 What can I do for you?
 
 Please provide a keyword to search for. Example: find book
@@ -646,7 +646,7 @@ ls
 **Expected output:**
 
 ```text
-Hello! I'm Luna
+Hello! I'm Luna!
 What can I do for you?
 
 Here are the tasks in your list:
