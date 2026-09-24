@@ -1,34 +1,40 @@
 package luna.gui;
 
 import java.io.IOException;
-import java.util.Collections;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Represents a dialog box containing the speaker's face and chat message.
  */
 public class DialogBox extends HBox {
+    private static final double AVATAR_SIZE = 40;
+    private static final double BOT_MESSAGE_HORIZONTAL_SPACE = 76;
+    private static final double USER_MESSAGE_HORIZONTAL_SPACE = 76;
+
     @FXML
     private Label dialog;
 
     @FXML
     private ImageView displayPicture;
 
+    @FXML
+    private StackPane displayPictureFrame;
+
     /**
      * Creates a dialog box representing user input or Luna's response.
      *
      * @param text Message to display.
-     * @param image Image representing the speaker.
+     * @param image Image representing the speaker, or {@code null} when no image is shown.
      */
     private DialogBox(String text, Image image) {
         try {
@@ -41,17 +47,26 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
-        displayPicture.setImage(image);
+        configureDisplayPicture(image);
     }
 
     /**
-     * Flips the dialog box such that the speaker image is on the left and text on the right.
+     * Configures an optional rounded-square display picture.
+     *
+     * @param image Image to display, or {@code null} to hide the display-picture space.
      */
-    private void flip() {
-        ObservableList<Node> children = FXCollections.observableArrayList(getChildren());
-        Collections.reverse(children);
-        getChildren().setAll(children);
-        setAlignment(Pos.TOP_LEFT);
+    private void configureDisplayPicture(Image image) {
+        boolean hasImage = image != null;
+        displayPictureFrame.setManaged(hasImage);
+        displayPictureFrame.setVisible(hasImage);
+
+        if (hasImage) {
+            displayPicture.setImage(image);
+            Rectangle roundedClip = new Rectangle(AVATAR_SIZE, AVATAR_SIZE);
+            roundedClip.setArcWidth(14);
+            roundedClip.setArcHeight(14);
+            displayPicture.setClip(roundedClip);
+        }
     }
 
     /**
@@ -62,7 +77,13 @@ public class DialogBox extends HBox {
      * @return A {@code DialogBox} styled as a user dialog.
      */
     public static DialogBox getUserDialog(String text, Image image) {
-        return new DialogBox(text, image);
+        DialogBox dialogBox = new DialogBox(text, image);
+        dialogBox.getStyleClass().add("user-dialog");
+        dialogBox.setAlignment(Pos.TOP_RIGHT);
+        dialogBox.getChildren().setAll(dialogBox.dialog, dialogBox.displayPictureFrame);
+        dialogBox.dialog.maxWidthProperty().bind(
+                dialogBox.widthProperty().subtract(USER_MESSAGE_HORIZONTAL_SPACE));
+        return dialogBox;
     }
 
     /**
@@ -74,7 +95,11 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getLunaDialog(String text, Image image) {
         DialogBox dialogBox = new DialogBox(text, image);
-        dialogBox.flip();
+        dialogBox.getStyleClass().add("luna-dialog");
+        dialogBox.setAlignment(Pos.TOP_LEFT);
+        dialogBox.dialog.maxWidthProperty().bind(
+                dialogBox.widthProperty().subtract(BOT_MESSAGE_HORIZONTAL_SPACE));
+        HBox.setHgrow(dialogBox.dialog, Priority.ALWAYS);
         return dialogBox;
     }
 }

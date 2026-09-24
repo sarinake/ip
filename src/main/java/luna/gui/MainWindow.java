@@ -6,14 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import luna.Luna;
 
 /**
  * Controller for the main GUI.
  */
-public class MainWindow extends AnchorPane {
+public class MainWindow {
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -23,8 +22,8 @@ public class MainWindow extends AnchorPane {
     @FXML
     private Button sendButton;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image lunaImage = new Image(this.getClass().getResourceAsStream("/images/DaLuna.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image lunaImage = new Image(this.getClass().getResourceAsStream("/images/DaLuna.png"));
     private Luna luna;
 
     /**
