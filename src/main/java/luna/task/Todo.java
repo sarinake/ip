@@ -34,7 +34,7 @@ public class Todo extends Task {
      * @throws LunaException If the line format is invalid.
      */
     protected static Todo fromFileParts(String[] parts) throws LunaException {
-        if (parts.length < 3) {
+        if (parts.length != 3) {
             throw new LunaException("Invalid todo line in data file");
         }
 
