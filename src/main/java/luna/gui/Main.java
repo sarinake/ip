@@ -31,7 +31,9 @@ public class Main extends Application {
         stage.setTitle("Luna");
         stage.setScene(scene);
         stage.setResizable(false);
-        fxmlLoader.<MainWindow>getController().setLuna(luna); // Inject the Luna instance.
+        MainWindow controller = fxmlLoader.getController();
+        controller.setLuna(luna);
+        controller.showWelcomeMessage();
         stage.show();
     }
 }

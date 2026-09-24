@@ -47,6 +47,14 @@ public class MainWindow {
     }
 
     /**
+     * Displays Luna's welcome message in the conversation.
+     */
+    public void showWelcomeMessage() {
+        dialogContainer.getChildren().add(
+                DialogBox.getLunaDialog(luna.getWelcomeMessage(), lunaImage));
+    }
+
+    /**
      * Creates two dialog boxes, one echoing user input and the other containing Luna's reply
      * and then appends them to the dialog container. Clears the user input after processing.
      */

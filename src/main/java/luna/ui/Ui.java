@@ -26,10 +26,11 @@ public class Ui {
 
     /**
      * Shows the welcome message.
+     *
+     * @param welcomeMessage Welcome message to display.
      */
-    public void showWelcome() {
-        System.out.println("Hello! I'm Luna");
-        System.out.println("What can I do for you?\n");
+    public void showWelcome(String welcomeMessage) {
+        System.out.println(welcomeMessage + "\n");
     }
 
     /**

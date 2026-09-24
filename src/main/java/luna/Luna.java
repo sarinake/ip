@@ -32,6 +32,8 @@ import luna.ui.Ui;
  * We hide the actual implementation as a private method executeInput().
  */
 public class Luna {
+    private static final String WELCOME_MESSAGE = "Hello! I'm Luna!\nWhat can I do for you?";
+
     private final TaskList tasks;
     private final Storage storage = new Storage();
     private final Ui ui = new Ui();
@@ -65,7 +67,7 @@ public class Luna {
      * Runs the main program loop until Luna receives the exit command.
      */
     public void run() {
-        ui.showWelcome();
+        ui.showWelcome(getWelcomeMessage());
 
         while (!shouldExit) {
             String input = ui.readCommand();
@@ -78,6 +80,15 @@ public class Luna {
         }
 
         ui.close();
+    }
+
+    /**
+     * Returns Luna's welcome message.
+     *
+     * @return Welcome message shared by the CLI and GUI.
+     */
+    public String getWelcomeMessage() {
+        return WELCOME_MESSAGE;
     }
 
     /**
