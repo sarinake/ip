@@ -160,7 +160,7 @@ Now you have 3 tasks in the list.
 
 ---
 
-### Mark a task as done
+### Mark a Task as Done
 
 Marks the specified task as completed.
 
@@ -191,7 +191,7 @@ Nice! I've marked this task as done:
 
 ---
 
-### Unmark a task
+### Unmark a Task
 
 Marks the task as not done.
 
@@ -222,7 +222,7 @@ OK, I've marked this task as not done yet:
 
 ---
 
-### Delete a task
+### Delete a Task
 
 Removes a task from the list.
 
@@ -254,7 +254,7 @@ Now you have 2 tasks in the list.
 
 ---
 
-### Find tasks
+### Find Tasks
 
 Searches for tasks containing a keyword.
 
